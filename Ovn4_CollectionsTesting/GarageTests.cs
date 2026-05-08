@@ -34,4 +34,25 @@ public class GarageTests
 
         Assert.Equal(vehicles, result);
     }
+
+    [Fact]
+    public void RemovingVehicles()
+    {
+        Vehicle[] vehicles = [
+            new("ABC123", new FuelEnginesStats(150, 2.0m, FuelTypes.Gasoline), 4, "Red"),
+            new("XYZ789", new FuelEnginesStats(320, 3.0m, FuelTypes.Diesel), 4, "Black"),
+            new("EV0001", new ElectricEnginesStats(408, 100.0m), 4, "White"),
+        ];
+        Vehicle[] expected = [
+            new("ABC123", new FuelEnginesStats(150, 2.0m, FuelTypes.Gasoline), 4, "Red"),
+            new("EV0001", new ElectricEnginesStats(408, 100.0m), 4, "White"),
+        ];
+        Garage garage = new(5);
+
+        garage.BulkLoadVehicles(vehicles);
+        garage.RemoveVehicle("XYZ789");
+        var result = garage.GetAllVehicles();
+
+        Assert.Equal(expected, result);
+    }
 }
