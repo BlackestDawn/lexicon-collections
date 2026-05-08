@@ -55,7 +55,16 @@ public class Garage(int maxSpace)
 
     public void BulkLoadVehicles(Vehicle[] vehicles)
     {
-        throw new NotImplementedException();
+        try {
+            foreach (var vehicle in vehicles)
+            {
+                this.AddVehicle(vehicle);
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            throw new ArgumentException($"Could not load all vehicles: {ex.Message}");
+        }
     }
 
     public Vehicle FindByLicenceNumber(string licenceNumber)
