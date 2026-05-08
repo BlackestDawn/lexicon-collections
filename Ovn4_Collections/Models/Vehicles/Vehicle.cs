@@ -1,7 +1,8 @@
 namespace Ovn4_Collections.Models.Vehicles;
 
-public class Vehicle(string licenceNumber, IEngineStats engine, int numWheels, string color)
+public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngineStats engine, int numWheels, string color)
 {
+    private VehicleTypes _vehicleType = vehicleType;
     private string _licenceNumber = licenceNumber;
     public string LicenceNumber
     {
@@ -17,10 +18,10 @@ public class Vehicle(string licenceNumber, IEngineStats engine, int numWheels, s
     }
 
   public override bool Equals(object? obj)
-  {
-    if (obj is not Vehicle other) return false;
-    return LicenceNumber == other.LicenceNumber;
-  }
+    {
+        if (obj is not Vehicle other) return false;
+        return LicenceNumber == other.LicenceNumber;
+    }
 
-  public override int GetHashCode() => LicenceNumber.GetHashCode();
+    public override int GetHashCode() => LicenceNumber.GetHashCode();
 }
