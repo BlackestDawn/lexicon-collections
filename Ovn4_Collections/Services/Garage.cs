@@ -5,6 +5,7 @@ namespace Ovn4_Collections.Services;
 public class Garage(int maxSpace)
 {
     private int _maxSpace = maxSpace;
+    private int _usedSpace = 0;
     private Vehicle[] _vehicles = new Vehicle[maxSpace];
 
     public void ListAllVehicles()
@@ -19,7 +20,19 @@ public class Garage(int maxSpace)
 
     public void AddVehicle(Vehicle vehicle)
     {
-        throw new NotImplementedException();
+        if (this._usedSpace == this._maxSpace)
+        {
+            throw new ArgumentException("Space is full");
+        }
+        for (int i = 0; i < this._maxSpace; i++)
+        {
+            if (this._vehicles[i] == null)
+            {
+                this._vehicles[i] = vehicle;
+                this._usedSpace++;
+                return;
+            }
+        }
     }
 
     public void RemoveVehicle(string licenceNumber)
