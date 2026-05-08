@@ -23,6 +23,21 @@ public class Garage(int maxSpace)
         return parkedVehicles;
     }
 
+    public string[] GetAllLicenceNumbers()
+    {
+        string[] licenceNumbers = new string[this._usedSpace];
+        int index = 0;
+        foreach (var vehicle in this._vehicles)
+        {
+            if (vehicle != null)
+            {
+                licenceNumbers[index] = vehicle.LicenceNumber;
+                index++;
+            }
+        }
+        return licenceNumbers;
+    }
+
     public void ListVehicleAmountByType()
     {
         throw new NotImplementedException();
