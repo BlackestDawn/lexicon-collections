@@ -28,6 +28,7 @@ class Program
                 case "park":
                     break;
                 case "release":
+                    garage.RemoveVehicle(ConsoleMenu.RemoveVehicle(garage.GetAllLicenceNumbers()));
                     break;
                 default:
                     break;

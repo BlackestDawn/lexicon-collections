@@ -27,4 +27,13 @@ public static class ConsoleMenu
             AnsiConsole.Write(new Text($"{vehicle}"));
         }
     }
+
+    public static string RemoveVehicle(string[] licenceNumbers)
+    {
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+            .Title("Select vehicle to release:")
+            .AddChoices(licenceNumbers)
+        );
+    }
 }
