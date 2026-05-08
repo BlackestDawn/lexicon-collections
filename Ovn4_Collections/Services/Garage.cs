@@ -37,7 +37,20 @@ public class Garage(int maxSpace)
 
     public void RemoveVehicle(string licenceNumber)
     {
-        throw new NotImplementedException();
+        if (this._usedSpace == 0)
+        {
+            throw new ArgumentException("Space is empty");
+        }
+        for (int i = 0; i < this._maxSpace; i++)
+        {
+            if (this._vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
+            {
+                this._vehicles[i] = null;
+                this._usedSpace--;
+                return;
+            }
+        }
+        throw new ArgumentException($"Vehicle with number {licenceNumber} not found");
     }
 
     public void BulkLoadVehicles(Vehicle[] vehicles)
