@@ -8,9 +8,19 @@ public class Garage(int maxSpace)
     private int _usedSpace = 0;
     private Vehicle[] _vehicles = new Vehicle[maxSpace];
 
-    public void ListAllVehicles()
+    public Vehicle[] GetAllVehicles()
     {
-        throw new NotImplementedException();
+        Vehicle[] parkedVehicles = new Vehicle[this._usedSpace];
+        int index = 0;
+        foreach (var vehicle in this._vehicles)
+        {
+            if (vehicle != null)
+            {
+                parkedVehicles[index] = vehicle;
+                index++;
+            }
+        }
+        return parkedVehicles;
     }
 
     public void ListVehicleAmountByType()
