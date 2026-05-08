@@ -10,12 +10,28 @@ class Program
     static void Main(string[] args)
     {
         string menuChoice;
+        Garage garage = new(20);
+
         AnsiConsole.Write(new FigletText("Garage Management").Color(Color.CadetBlue));
+        garage.BulkLoadVehicles(TestData.testVehicles);
 
         do {
             menuChoice = ConsoleMenu.DisplayMainMenu();
 
-            Console.WriteLine($"Menu choice: {menuChoice}");
+            switch (menuChoice)
+            {
+                case "list":
+                    AnsiConsole.Write(new Text("All parked vehicles:\n"));
+                    var vehicles = garage.GetAllVehicles();
+                    ConsoleMenu.ListVehicles(vehicles);
+                    break;
+                case "park":
+                    break;
+                case "release":
+                    break;
+                default:
+                    break;
+            }
         } while (menuChoice != "quit");
     }
 }
