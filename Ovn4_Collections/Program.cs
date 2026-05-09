@@ -25,6 +25,7 @@ class Program
                     ConsoleMenu.ListVehicles(vehicles);
                     break;
                 case "park":
+                    garage.AddVehicle(ConsoleMenu.AddVehicle());
                     break;
                 case "release":
                     garage.RemoveVehicle(ConsoleMenu.RemoveVehicle(garage.GetAllLicenceNumbers()));
