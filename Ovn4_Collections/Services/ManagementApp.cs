@@ -1,0 +1,35 @@
+using Ovn4_Collections.Models;
+using Ovn4_Collections.Models.Data;
+
+namespace Ovn4_Collections.Services;
+
+public class ManagementApp(Garage garage, IUIInterface ui)
+{
+    private readonly Garage _garage = garage;
+    private readonly IUIInterface _ui = ui;
+
+    public void RunApp()
+    {
+        string menuChoice;
+        this._garage.BulkLoadVehicles(TestData.testVehicles);
+
+        do {
+            menuChoice = this._ui.MainMenuWindow();
+
+            switch (menuChoice)
+            {
+                case "list":
+                    this._ui.VehicleListWindow(this._garage.GetAllVehicles());
+                    break;
+                case "park":
+                    this._garage.AddVehicle(this._ui.AddVehicleWindow());
+                    break;
+                case "release":
+                    this._garage.RemoveVehicle(this._ui.RemoveVehicleWindow(this._garage.GetAllLicenceNumbers()));
+                    break;
+                default:
+                    break;
+            }
+        } while (menuChoice != "quit");
+    }
+}
