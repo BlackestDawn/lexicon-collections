@@ -5,11 +5,37 @@ namespace Ovn4_Collections.Services;
 public class Garage(int maxSpace)
 {
     private int _maxSpace = maxSpace;
+    private int _usedSpace = 0;
     private Vehicle[] _vehicles = new Vehicle[maxSpace];
 
-    public void ListAllVehicles()
+    public Vehicle[] GetAllVehicles()
     {
-        throw new NotImplementedException();
+        Vehicle[] parkedVehicles = new Vehicle[this._usedSpace];
+        int index = 0;
+        foreach (var vehicle in this._vehicles)
+        {
+            if (vehicle != null)
+            {
+                parkedVehicles[index] = vehicle;
+                index++;
+            }
+        }
+        return parkedVehicles;
+    }
+
+    public string[] GetAllLicenceNumbers()
+    {
+        string[] licenceNumbers = new string[this._usedSpace];
+        int index = 0;
+        foreach (var vehicle in this._vehicles)
+        {
+            if (vehicle != null)
+            {
+                licenceNumbers[index] = vehicle.LicenceNumber;
+                index++;
+            }
+        }
+        return licenceNumbers;
     }
 
     public void ListVehicleAmountByType()
@@ -19,17 +45,51 @@ public class Garage(int maxSpace)
 
     public void AddVehicle(Vehicle vehicle)
     {
-        throw new NotImplementedException();
+        if (this._usedSpace == this._maxSpace)
+        {
+            throw new ArgumentException("Space is full");
+        }
+        for (int i = 0; i < this._maxSpace; i++)
+        {
+            if (this._vehicles[i] == null)
+            {
+                this._vehicles[i] = vehicle;
+                this._usedSpace++;
+                return;
+            }
+        }
     }
 
     public void RemoveVehicle(string licenceNumber)
     {
-        throw new NotImplementedException();
+        if (this._usedSpace == 0)
+        {
+            throw new ArgumentException("Space is empty");
+        }
+        for (int i = 0; i < this._maxSpace; i++)
+        {
+            if (this._vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
+            {
+                this._vehicles[i] = null;
+                this._usedSpace--;
+                return;
+            }
+        }
+        throw new ArgumentException($"Vehicle with number {licenceNumber} not found");
     }
 
     public void BulkLoadVehicles(Vehicle[] vehicles)
     {
-        throw new NotImplementedException();
+        try {
+            foreach (var vehicle in vehicles)
+            {
+                this.AddVehicle(vehicle);
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            throw new ArgumentException($"Could not load all vehicles: {ex.Message}");
+        }
     }
 
     public Vehicle FindByLicenceNumber(string licenceNumber)

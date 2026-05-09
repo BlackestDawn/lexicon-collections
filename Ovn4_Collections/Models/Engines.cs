@@ -1,12 +1,12 @@
 namespace Ovn4_Collections.Models;
 
-public interface IEngineStats
+public interface IEngine
 {
     int MaxPowerHP { get; }
     string Description { get; }
 }
 
-public readonly struct FuelEnginesStats(int maxPowerHP, decimal displacementLiters, FuelTypes fuelType) : IEngineStats
+public readonly struct FuelEngine(int maxPowerHP, decimal displacementLiters, FuelTypes fuelType) : IEngine
 {
     public int MaxPowerHP { get; } = maxPowerHP;
     public decimal DisplacementLiters {get; } = displacementLiters;
@@ -15,7 +15,7 @@ public readonly struct FuelEnginesStats(int maxPowerHP, decimal displacementLite
     public string Description => $"{FuelType}, {DisplacementLiters}L";
 }
 
-public readonly struct ElectricEnginesStats(int maxPowerHP, decimal batteryCapacityKwh) : IEngineStats
+public readonly struct ElectricEngine(int maxPowerHP, decimal batteryCapacityKwh) : IEngine
 {
     public int MaxPowerHP { get; } = maxPowerHP;
     public decimal BatteryCapacityKwh { get; } = batteryCapacityKwh;
