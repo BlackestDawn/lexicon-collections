@@ -4,7 +4,7 @@ using Spectre.Console;
 
 namespace Ovn4_Collections.Services;
 
-public static class ConsoleMenu
+public static class ConsoleUI
 {
     public static string DisplayMainMenu()
     {

@@ -15,18 +15,18 @@ class Program
         garage.BulkLoadVehicles(TestData.testVehicles);
 
         do {
-            menuChoice = ConsoleMenu.DisplayMainMenu();
+            menuChoice = ConsoleUI.DisplayMainMenu();
 
             switch (menuChoice)
             {
                 case "list":
-                    ConsoleMenu.ListVehicles(garage.GetAllVehicles());
+                    ConsoleUI.ListVehicles(garage.GetAllVehicles());
                     break;
                 case "park":
-                    garage.AddVehicle(ConsoleMenu.AddVehicle());
+                    garage.AddVehicle(ConsoleUI.AddVehicle());
                     break;
                 case "release":
-                    garage.RemoveVehicle(ConsoleMenu.RemoveVehicle(garage.GetAllLicenceNumbers()));
+                    garage.RemoveVehicle(ConsoleUI.RemoveVehicle(garage.GetAllLicenceNumbers()));
                     break;
                 default:
                     break;
