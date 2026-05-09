@@ -10,7 +10,7 @@ public class ManagementApp(Garage garage, IUIInterface ui)
 
     public void RunApp()
     {
-        string menuChoice;
+        MainMenuOptions menuChoice;
         this._garage.BulkLoadVehicles(TestData.testVehicles);
 
         do {
@@ -18,18 +18,18 @@ public class ManagementApp(Garage garage, IUIInterface ui)
 
             switch (menuChoice)
             {
-                case "list":
+                case MainMenuOptions.List:
                     this._ui.VehicleListWindow(this._garage.GetAllVehicles());
                     break;
-                case "park":
+                case MainMenuOptions.Add:
                     this._garage.AddVehicle(this._ui.AddVehicleWindow());
                     break;
-                case "release":
+                case MainMenuOptions.Remove:
                     this._garage.RemoveVehicle(this._ui.RemoveVehicleWindow(this._garage.GetAllLicenceNumbers()));
                     break;
                 default:
                     break;
             }
-        } while (menuChoice != "quit");
+        } while (menuChoice != MainMenuOptions.Quit);
     }
 }

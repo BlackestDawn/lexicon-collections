@@ -1,3 +1,4 @@
+using Ovn4_Collections.Helpers;
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
 using Spectre.Console;
@@ -10,19 +11,14 @@ public class ConsoleUI: IUIInterface
     {
         AnsiConsole.Write(new FigletText("Garage Management").Color(Color.CadetBlue));
     }
-    public string MainMenuWindow()
+    public MainMenuOptions MainMenuWindow()
     {
-        string val = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<MainMenuOptions>()
                 .Title("Main menu")
-                .AddChoices(
-                    "List parked vehicles",
-                    "Park a vehicle",
-                    "Release a vehicle",
-                    "Quit"
-                )
+                .UseConverter(EnumHelpers.GetDescription)
+                .AddChoices(Enum.GetValues<MainMenuOptions>())
         );
-        return val.Split(" ")[0].ToLower();
     }
 
     public void VehicleListWindow(Vehicle[] vehicles)
