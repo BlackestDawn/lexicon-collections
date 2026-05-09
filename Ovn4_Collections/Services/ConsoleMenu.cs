@@ -23,18 +23,20 @@ public static class ConsoleMenu
 
     public static void ListVehicles(Vehicle[] vehicles)
     {
+        AnsiConsole.Write(new Text("All parked vehicles:\n"));
         foreach (var vehicle in vehicles)
         {
             AnsiConsole.Write(new Text($"{vehicle}"));
         }
+        AnsiConsole.WriteLine();
     }
 
     public static string RemoveVehicle(string[] licenceNumbers)
     {
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-            .Title("Select vehicle to release:")
-            .AddChoices(licenceNumbers)
+                .Title("Select vehicle to release:")
+                .AddChoices(licenceNumbers)
         );
     }
 

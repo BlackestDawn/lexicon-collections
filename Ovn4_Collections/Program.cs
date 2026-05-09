@@ -20,9 +20,7 @@ class Program
             switch (menuChoice)
             {
                 case "list":
-                    AnsiConsole.Write(new Text("All parked vehicles:\n"));
-                    var vehicles = garage.GetAllVehicles();
-                    ConsoleMenu.ListVehicles(vehicles);
+                    ConsoleMenu.ListVehicles(garage.GetAllVehicles());
                     break;
                 case "park":
                     garage.AddVehicle(ConsoleMenu.AddVehicle());
