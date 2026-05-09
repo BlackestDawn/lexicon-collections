@@ -6,6 +6,10 @@ namespace Ovn4_Collections.Services;
 
 public class ConsoleUI: IUIInterface
 {
+    public ConsoleUI()
+    {
+        AnsiConsole.Write(new FigletText("Garage Management").Color(Color.CadetBlue));
+    }
     public string MainMenuWindow()
     {
         string val = AnsiConsole.Prompt(

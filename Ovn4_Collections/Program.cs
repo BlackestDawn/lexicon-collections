@@ -1,7 +1,6 @@
 ﻿using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Data;
 using Ovn4_Collections.Services;
-using Spectre.Console;
 
 namespace Ovn4_Collections;
 
@@ -13,7 +12,6 @@ class Program
         Garage garage = new(20);
         IUIInterface ui = new ConsoleUI();
 
-        AnsiConsole.Write(new FigletText("Garage Management").Color(Color.CadetBlue));
         garage.BulkLoadVehicles(TestData.testVehicles);
 
 
