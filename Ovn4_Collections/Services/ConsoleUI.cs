@@ -4,9 +4,9 @@ using Spectre.Console;
 
 namespace Ovn4_Collections.Services;
 
-public static class ConsoleUI
+public class ConsoleUI: IUIInterface
 {
-    public static string DisplayMainMenu()
+    public string MainMenuWindow()
     {
         string val = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -21,7 +21,7 @@ public static class ConsoleUI
         return val.Split(" ")[0].ToLower();
     }
 
-    public static void ListVehicles(Vehicle[] vehicles)
+    public void VehicleListWindow(Vehicle[] vehicles)
     {
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
         foreach (var vehicle in vehicles)
@@ -31,7 +31,7 @@ public static class ConsoleUI
         AnsiConsole.WriteLine();
     }
 
-    public static string RemoveVehicle(string[] licenceNumbers)
+    public string RemoveVehicleWindow(string[] licenceNumbers)
     {
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -40,7 +40,7 @@ public static class ConsoleUI
         );
     }
 
-    public static Vehicle AddVehicle()
+    public Vehicle AddVehicleWindow()
     {
         var vehicleType = AnsiConsole.Prompt(
             new SelectionPrompt<VehicleTypes>()

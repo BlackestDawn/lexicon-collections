@@ -1,4 +1,5 @@
-﻿using Ovn4_Collections.Models.Data;
+﻿using Ovn4_Collections.Models;
+using Ovn4_Collections.Models.Data;
 using Ovn4_Collections.Services;
 using Spectre.Console;
 
@@ -10,23 +11,25 @@ class Program
     {
         string menuChoice;
         Garage garage = new(20);
+        IUIInterface ui = new ConsoleUI();
 
         AnsiConsole.Write(new FigletText("Garage Management").Color(Color.CadetBlue));
         garage.BulkLoadVehicles(TestData.testVehicles);
 
+
         do {
-            menuChoice = ConsoleUI.DisplayMainMenu();
+            menuChoice = ui.MainMenuWindow();
 
             switch (menuChoice)
             {
                 case "list":
-                    ConsoleUI.ListVehicles(garage.GetAllVehicles());
+                    ui.VehicleListWindow(garage.GetAllVehicles());
                     break;
                 case "park":
-                    garage.AddVehicle(ConsoleUI.AddVehicle());
+                    garage.AddVehicle(ui.AddVehicleWindow());
                     break;
                 case "release":
-                    garage.RemoveVehicle(ConsoleUI.RemoveVehicle(garage.GetAllLicenceNumbers()));
+                    garage.RemoveVehicle(ui.RemoveVehicleWindow(garage.GetAllLicenceNumbers()));
                     break;
                 default:
                     break;
