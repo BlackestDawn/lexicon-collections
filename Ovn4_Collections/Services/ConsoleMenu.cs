@@ -59,7 +59,7 @@ public static class ConsoleMenu
                 .AddChoices("Fuel based", "Electric")
         );
 
-        IEngineStats engineType;
+        IEngine engineType;
         var engineHP = AnsiConsole.Prompt(
             new TextPrompt<int>("Enter horse power of engine:")
                 .Validate(input => input > 0, "Must be a positive number")
@@ -75,7 +75,7 @@ public static class ConsoleMenu
                     .Title("Select engine's fuel type:")
                     .AddChoices(Enum.GetValues<FuelTypes>())
             );
-            engineType = new FuelEnginesStats(engineHP, displacementLiters, fuel);
+            engineType = new FuelEngine(engineHP, displacementLiters, fuel);
         }
         else
         {
@@ -83,7 +83,7 @@ public static class ConsoleMenu
                 new TextPrompt<decimal>("Enter engine's battery capacity in kWh:")
                     .Validate(input => input > 0, "Must be a positive number")
             );
-            engineType = new ElectricEnginesStats(engineHP, capacity);
+            engineType = new ElectricEngine(engineHP, capacity);
         }
 
         var wheelAmount = AnsiConsole.Prompt(

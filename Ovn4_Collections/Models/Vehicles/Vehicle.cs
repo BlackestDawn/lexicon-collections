@@ -1,6 +1,6 @@
 namespace Ovn4_Collections.Models.Vehicles;
 
-public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngineStats engine, int numWheels, string color)
+public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color)
 {
     private VehicleTypes _vehicleType = vehicleType;
     private string _licenceNumber = licenceNumber;
@@ -8,7 +8,7 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngineStat
     {
         get => _licenceNumber;
     }
-    private IEngineStats _engine = engine;
+    private IEngine _engine = engine;
     private int _numWheels = numWheels;
     private string _color = color;
 
