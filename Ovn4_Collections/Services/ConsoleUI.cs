@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Ovn4_Collections.Helpers;
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
@@ -42,65 +43,107 @@ public class ConsoleUI: IUIInterface
 
     public Vehicle AddVehicleWindow()
     {
-        var vehicleType = AnsiConsole.Prompt(
+        return new(
+            this.AskForVehicleType(),
+            this.AskForLicenceNumber(),
+            this.AskForEngine(),
+            this.AskForWheelCount(),
+            this.AskForColor()
+        );
+    }
+
+    private VehicleTypes AskForVehicleType()
+    {
+        return AnsiConsole.Prompt(
             new SelectionPrompt<VehicleTypes>()
                 .Title("Select vehicle type:")
                 .AddChoices(Enum.GetValues<VehicleTypes>())
         );
+    }
 
-        var licenceNumber = AnsiConsole.Prompt(
+    private string AskForLicenceNumber()
+    {
+        return AnsiConsole.Prompt(
             new TextPrompt<string>("Enter licence number:")
                 .Validate(input => input.Length >= 6, "Must be at least 6 characters")
             );
+    }
 
-        var engineSelection = AnsiConsole.Prompt<string>(
+    private IEngine AskForEngine()
+    {
+        var engineSelection = this.AskForEngineType();
+
+        if (engineSelection == "Fuel based")
+        {
+            return new FuelEngine(
+                this.AskForEngineHP(),
+                this.AskForEngineDisplacementVolume(),
+                this.AskForEngineFuelType()
+            );
+        }
+        else
+        {
+            return new ElectricEngine(
+                this.AskForEngineHP(),
+                this.AskForEngineBatteryCapacity()
+            );
+        }
+    }
+
+    private string AskForEngineType()
+    {
+        return AnsiConsole.Prompt<string>(
             new SelectionPrompt<string>()
                 .Title("Select engine type")
                 .AddChoices("Fuel based", "Electric")
-        );
+            );
+    }
 
-        IEngine engineType;
-        var engineHP = AnsiConsole.Prompt(
+    private int AskForEngineHP()
+    {
+        return AnsiConsole.Prompt(
             new TextPrompt<int>("Enter horse power of engine:")
                 .Validate(input => input > 0, "Must be a positive number")
             );
-        if (engineSelection == "Fuel based")
-        {
-            var displacementLiters = AnsiConsole.Prompt(
-                new TextPrompt<decimal>("Enter engine's displacement volume in liters:")
-                    .Validate(input => input > 0, "Must be a positive number")
-            );
-            var fuel = AnsiConsole.Prompt(
+    }
+
+    private FuelTypes AskForEngineFuelType()
+    {
+        return AnsiConsole.Prompt(
                 new SelectionPrompt<FuelTypes>()
                     .Title("Select engine's fuel type:")
                     .AddChoices(Enum.GetValues<FuelTypes>())
             );
-            engineType = new FuelEngine(engineHP, displacementLiters, fuel);
-        }
-        else
-        {
-            var capacity = AnsiConsole.Prompt(
+    }
+
+    private decimal AskForEngineDisplacementVolume()
+    {
+        return AnsiConsole.Prompt(
+                new TextPrompt<decimal>("Enter engine's displacement volume in liters:")
+                    .Validate(input => input > 0, "Must be a positive number")
+            );
+    }
+
+    private decimal AskForEngineBatteryCapacity()
+    {
+        return AnsiConsole.Prompt(
                 new TextPrompt<decimal>("Enter engine's battery capacity in kWh:")
                     .Validate(input => input > 0, "Must be a positive number")
             );
-            engineType = new ElectricEngine(engineHP, capacity);
-        }
+    }
 
-        var wheelAmount = AnsiConsole.Prompt(
+    private int AskForWheelCount()
+    {
+        return AnsiConsole.Prompt(
             new TextPrompt<int>("Enter number of wheels:")
                 .Validate(input => input >= 0, "Cannot be a negative number")
         );
+    }
 
-        var color = AnsiConsole.Prompt(
+    private string AskForColor()
+    {
+        return AnsiConsole.Prompt(
             new TextPrompt<string>("Enter vehicle's color:")
-        );
-
-        return new(
-            vehicleType,
-            licenceNumber,
-            engineType,
-            wheelAmount,
-            color
         );
     }
 }
