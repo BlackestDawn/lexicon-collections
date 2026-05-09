@@ -3,6 +3,10 @@ namespace Ovn4_Collections.Models.Vehicles;
 public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color)
 {
     private VehicleTypes _vehicleType = vehicleType;
+    public VehicleTypes VehicleType
+    {
+        get => this._vehicleType;
+    }
     private string _licenceNumber = licenceNumber;
     public string LicenceNumber
     {

@@ -1,12 +1,30 @@
+using System.Collections;
+using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
 
 namespace Ovn4_Collections.Services;
 
-public class Garage(int maxSpace)
+public class Garage
 {
-    private int _maxSpace = maxSpace;
+    private int _maxSpace;
     private int _usedSpace = 0;
-    private Vehicle[] _vehicles = new Vehicle[maxSpace];
+    private Vehicle[] _vehicles;
+    private Hashtable _amountByType;
+    public Hashtable AmountsByVehicleType
+    {
+        get => this._amountByType;
+    }
+
+    public Garage(int maxSpace)
+    {
+        this._maxSpace = maxSpace;
+        this._vehicles = new Vehicle[maxSpace];
+        this._amountByType = new Hashtable();
+        foreach (var type in Enum.GetValues<VehicleTypes>())
+        {
+            this._amountByType.Add(type, 0);
+        }
+    }
 
     public Vehicle[] GetAllVehicles()
     {
@@ -53,6 +71,8 @@ public class Garage(int maxSpace)
         {
             if (this._vehicles[i] == null)
             {
+                var vehicleType = vehicle.VehicleType;
+                this._amountByType[vehicleType] = (int)this._amountByType[vehicleType] + 1;
                 this._vehicles[i] = vehicle;
                 this._usedSpace++;
                 return;
@@ -68,8 +88,10 @@ public class Garage(int maxSpace)
         }
         for (int i = 0; i < this._maxSpace; i++)
         {
-            if (this._vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
+            if (this._vehicles[i] != null && this._vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
             {
+                var vehicleType = this._vehicles[i].VehicleType;
+                this._amountByType[vehicleType] = (int)this._amountByType[vehicleType] - 1;
                 this._vehicles[i] = null;
                 this._usedSpace--;
                 return;

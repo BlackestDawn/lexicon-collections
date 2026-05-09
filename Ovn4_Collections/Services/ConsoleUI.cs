@@ -1,27 +1,27 @@
+using Ovn4_Collections.Helpers;
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
 using Spectre.Console;
 
 namespace Ovn4_Collections.Services;
 
-public static class ConsoleMenu
+public class ConsoleUI: IUIInterface
 {
-    public static string DisplayMainMenu()
+    public ConsoleUI()
     {
-        string val = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
+        AnsiConsole.Write(new FigletText("Garage Management").Color(Color.CadetBlue));
+    }
+    public MainMenuOptions MainMenuWindow()
+    {
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<MainMenuOptions>()
                 .Title("Main menu")
-                .AddChoices(
-                    "List parked vehicles",
-                    "Park a vehicle",
-                    "Release a vehicle",
-                    "Quit"
-                )
+                .UseConverter(EnumHelpers.GetDescription)
+                .AddChoices(Enum.GetValues<MainMenuOptions>())
         );
-        return val.Split(" ")[0].ToLower();
     }
 
-    public static void ListVehicles(Vehicle[] vehicles)
+    public void VehicleListWindow(Vehicle[] vehicles)
     {
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
         foreach (var vehicle in vehicles)
@@ -31,7 +31,7 @@ public static class ConsoleMenu
         AnsiConsole.WriteLine();
     }
 
-    public static string RemoveVehicle(string[] licenceNumbers)
+    public string RemoveVehicleWindow(string[] licenceNumbers)
     {
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -40,7 +40,7 @@ public static class ConsoleMenu
         );
     }
 
-    public static Vehicle AddVehicle()
+    public Vehicle AddVehicleWindow()
     {
         var vehicleType = AnsiConsole.Prompt(
             new SelectionPrompt<VehicleTypes>()
