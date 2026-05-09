@@ -20,6 +20,24 @@ public class GarageTests
     }
 
     [Fact]
+    public void AddingVehicles_BeyondCapacity_ThrowsArgumentException()
+    {
+        Vehicle[] vehicles = [
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+        ];
+        Vehicle[] expected = [
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+        ];
+        Garage garage = new(1);
+
+        Assert.Throws<ArgumentException>(() => garage.BulkLoadVehicles(vehicles));
+    }
+
+    [Fact]
     public void BulkAddingVehicles()
     {
         Vehicle[] vehicles = [
@@ -59,5 +77,27 @@ public class GarageTests
         var result = garage.GetAllVehicles();
 
         Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void RemovingNonExistentVehicle_ThrowsArgumentException()
+    {
+        Vehicle[] vehicles = [
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+            new(VehicleTypes.Motorcycle, "BIKE42", new FuelEngine(85, 0.6m, FuelTypes.Gasoline), 2, "Blue"),
+            new(VehicleTypes.Bus, "TRK999", new FuelEngine(500, 12.7m, FuelTypes.Diesel), 18, "Orange"),
+        ];
+        Garage garage = new(5);
+
+        garage.BulkLoadVehicles(vehicles);
+        Assert.Throws<ArgumentException>(() => garage.RemoveVehicle("NOTHERE"));
+    }
+
+    [Fact]
+    public void RemovingVehicle_WhenEmpty_ThrowsArgumentException()
+    {
+        Garage garage = new(5);
+
+        Assert.Throws<ArgumentException>(() => garage.RemoveVehicle("BIKE42"));
     }
 }
