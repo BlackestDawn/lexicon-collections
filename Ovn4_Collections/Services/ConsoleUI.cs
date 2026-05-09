@@ -1,22 +1,64 @@
-using System.Reflection.Metadata.Ecma335;
 using Ovn4_Collections.Helpers;
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
 using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace Ovn4_Collections.Services;
 
 public class ConsoleUI: IUIInterface
 {
-    public ConsoleUI()
+    // private Func _usageStats;
+
+    private void RenderHeader(IRenderable? content)
     {
-        AnsiConsole.Write(new FigletText("Garage Management").Color(Color.CadetBlue));
+        Panel totalUsage = new Panel(
+            new BreakdownChart()
+                .Width(20)
+                .AddItem("Used:", 10, Color.Red3)
+                .AddItem("Free:", 10, Color.LightYellow3)
+            )
+            .Header("Space usage")
+            .NoBorder()
+            .Padding(2, 1);
+
+        Panel typesBreakdown = new Panel(
+            new BreakdownChart()
+                .Width(30)
+                .AddItem("Cars", 4, Color.Magenta)
+                .AddItem("Motorbikes", 1, Color.LightGreen)
+                .AddItem("Bus", 2, Color.Cyan)
+                .AddItem("Boat", 1, Color.DarkBlue)
+                .AddItem("Airplane", 2, Color.LightPink4)
+            )
+            .Header("Usage by types")
+            .NoBorder()
+            .Padding(2, 1);
+
+        Grid mainGrid = new Grid()
+            .AddColumns(3)
+            .AddRow(
+                content ?? new Text(""),
+                Align.Center(totalUsage),
+                Align.Right(typesBreakdown)
+            );
+
+        Panel mainPanel = new Panel(mainGrid)
+            .Header("[yellow]===[/] [cadetBlue]Garage Management[/] [yellow]===[/]", Justify.Center)
+            .RoundedBorder()
+            .BorderColor(Color.Yellow)
+            .Padding(4, 2)
+            .Expand();
+
+        AnsiConsole.Clear();
+        AnsiConsole.Write(mainPanel);
     }
+
     public MainMenuOptions MainMenuWindow()
     {
+        this.RenderHeader(new Text("Main Menu"));
         return AnsiConsole.Prompt(
             new SelectionPrompt<MainMenuOptions>()
-                .Title("Main menu")
                 .UseConverter(EnumHelpers.GetDescription)
                 .AddChoices(Enum.GetValues<MainMenuOptions>())
         );
