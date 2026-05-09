@@ -100,4 +100,33 @@ public class GarageTests
 
         Assert.Throws<ArgumentException>(() => garage.RemoveVehicle("BIKE42"));
     }
+
+    [Fact]
+    public void AddingCars_Increases_AmountByType()
+    {
+        Vehicle[] vehicles = [
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), 4, "Black"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+        ];
+        Garage garage = new(5);
+        garage.BulkLoadVehicles(vehicles);
+
+        Assert.Equal(3, (int)garage.AmountsByVehicleType[VehicleTypes.Car]);
+    }
+
+    [Fact]
+    public void RemovingCars_Decreases_AmountByType()
+    {
+        Vehicle[] vehicles = [
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+            new(VehicleTypes.Car, "XYZ789", new FuelEngine(320, 3.0m, FuelTypes.Diesel), 4, "Black"),
+            new(VehicleTypes.Car, "EV0001", new ElectricEngine(408, 100.0m), 4, "White"),
+        ];
+        Garage garage = new(5);
+        garage.BulkLoadVehicles(vehicles);
+        garage.RemoveVehicle("XYZ789");
+
+        Assert.Equal(2, (int)garage.AmountsByVehicleType[VehicleTypes.Car]);
+    }
 }
