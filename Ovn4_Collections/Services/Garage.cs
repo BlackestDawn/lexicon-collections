@@ -68,7 +68,7 @@ public class Garage(int maxSpace)
         }
         for (int i = 0; i < this._maxSpace; i++)
         {
-            if (this._vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
+            if (this._vehicles[i] != null && this._vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
             {
                 this._vehicles[i] = null;
                 this._usedSpace--;
