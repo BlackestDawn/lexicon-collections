@@ -73,6 +73,12 @@ public class ConsoleUI: IUIInterface
         AnsiConsole.Write(mainPanel);
     }
 
+    public void PauseDisplay(string message = "Press any key to continue")
+    {
+        AnsiConsole.MarkupLine($"\n[gray]{message}[/]");
+        Console.ReadKey(intercept: true);
+    }
+
     public MainMenuOptions MainMenuWindow()
     {
         this.RenderHeader(new Text("Main Menu"));

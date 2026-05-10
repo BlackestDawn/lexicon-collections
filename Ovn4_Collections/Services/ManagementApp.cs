@@ -26,6 +26,7 @@ public class ManagementApp
             {
                 case MainMenuOptions.List:
                     this._ui.VehicleListWindow(this._garage.GetAllVehicles());
+                    this._ui.PauseDisplay();
                     break;
                 case MainMenuOptions.Add:
                     this._garage.AddVehicle(this._ui.AddVehicleWindow());
