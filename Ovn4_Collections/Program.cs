@@ -8,10 +8,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Garage garage = new(20);
-        IUIInterface ui = new ConsoleUI();
-
-        ManagementApp app = new(garage, ui);
+        ManagementApp app = new();
         app.RunApp();
     }
 }

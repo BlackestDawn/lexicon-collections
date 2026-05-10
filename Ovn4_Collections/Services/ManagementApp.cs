@@ -3,10 +3,16 @@ using Ovn4_Collections.Models.Data;
 
 namespace Ovn4_Collections.Services;
 
-public class ManagementApp(Garage garage, IUIInterface ui)
+public class ManagementApp
 {
-    private readonly Garage _garage = garage;
-    private readonly IUIInterface _ui = ui;
+    private readonly Garage _garage;
+    private readonly IUIInterface _ui;
+
+    public ManagementApp()
+    {
+        this._garage = new Garage(20);
+        this._ui = new ConsoleUI();
+    }
 
     public void RunApp()
     {
