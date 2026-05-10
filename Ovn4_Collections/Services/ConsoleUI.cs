@@ -85,6 +85,7 @@ public class ConsoleUI: IUIInterface
 
     public void VehicleListWindow(Vehicle[] vehicles)
     {
+        this.RenderHeader(new Text("Main Menu"));
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
         foreach (var vehicle in vehicles)
         {
@@ -95,6 +96,7 @@ public class ConsoleUI: IUIInterface
 
     public string RemoveVehicleWindow(string[] licenceNumbers)
     {
+        this.RenderHeader(new Text("Main Menu"));
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select vehicle to release:")
@@ -104,6 +106,7 @@ public class ConsoleUI: IUIInterface
 
     public Vehicle AddVehicleWindow()
     {
+        this.RenderHeader(new Text("Main Menu"));
         return new(
             this.AskForVehicleType(),
             this.AskForLicenceNumber(),
