@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Text;
+using Ovn4_Collections.Extensions;
 using Ovn4_Collections.Helpers;
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
@@ -10,6 +12,7 @@ namespace Ovn4_Collections.Services;
 public class ConsoleUI: IUIInterface
 {
     private readonly Func<Hashtable> _usageStatus;
+    private Stack _menuPath = new Stack(5);
     private readonly Color[] _typesColor = new Color[]
     {
         Color.Magenta,
@@ -22,10 +25,25 @@ public class ConsoleUI: IUIInterface
     public ConsoleUI(Func<Hashtable> getStatus)
     {
         this._usageStatus = getStatus;
+        this._menuPath.Push("Main Menu");
     }
 
-    private void RenderHeader(IRenderable? content)
+    private void RenderHeader()
     {
+        StringBuilder menuPathSB = new StringBuilder();
+        int depthCounter = this._menuPath.Count;
+        foreach (string item in this._menuPath)
+        {
+            menuPathSB.PrependLine($"{new String(' ', 2 * depthCounter)}{item}");
+            depthCounter--;
+        }
+
+        Panel menuPathPanel = new Panel(menuPathSB.ToString())
+            .Header("  Menu path")
+            .Expand()
+            .NoBorder()
+            .Padding(0, 2);
+
         Hashtable currentStatus = this._usageStatus();
 
         Panel usagePanel = new Panel(
@@ -57,7 +75,7 @@ public class ConsoleUI: IUIInterface
         Grid mainGrid = new Grid()
             .AddColumns(3)
             .AddRow(
-                content ?? new Text(""),
+                Align.Left(menuPathPanel),
                 Align.Center(usagePanel),
                 Align.Right(typesPanel)
             );
@@ -81,7 +99,7 @@ public class ConsoleUI: IUIInterface
 
     public MainMenuOptions MainMenuWindow()
     {
-        this.RenderHeader(new Text("Main Menu"));
+        this.RenderHeader();
         return AnsiConsole.Prompt(
             new SelectionPrompt<MainMenuOptions>()
                 .UseConverter(EnumHelpers.GetDescription)
@@ -91,35 +109,43 @@ public class ConsoleUI: IUIInterface
 
     public void VehicleListWindow(Vehicle[] vehicles)
     {
-        this.RenderHeader(new Text("Main Menu"));
+        this._menuPath.Push("Vehicle list");
+        this.RenderHeader();
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
         foreach (var vehicle in vehicles)
         {
             AnsiConsole.Write(new Text($"{vehicle}"));
         }
         AnsiConsole.WriteLine();
+        this._menuPath.Pop();
     }
 
     public string RemoveVehicleWindow(string[] licenceNumbers)
     {
-        this.RenderHeader(new Text("Main Menu"));
-        return AnsiConsole.Prompt(
+        this._menuPath.Push("Releasing vehicle");
+        this.RenderHeader();
+        string licenceNumber = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select vehicle to release:")
                 .AddChoices(licenceNumbers)
         );
+        this._menuPath.Pop();
+        return licenceNumber;
     }
 
     public Vehicle AddVehicleWindow()
     {
-        this.RenderHeader(new Text("Main Menu"));
-        return new(
+        this._menuPath.Push("Adding vehicle");
+        this.RenderHeader();
+        Vehicle newVehicle = new(
             this.AskForVehicleType(),
             this.AskForLicenceNumber(),
             this.AskForEngine(),
             this.AskForWheelCount(),
             this.AskForColor()
         );
+        this._menuPath.Pop();
+        return newVehicle;
     }
 
     private VehicleTypes AskForVehicleType()
