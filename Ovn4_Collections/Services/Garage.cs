@@ -7,7 +7,15 @@ namespace Ovn4_Collections.Services;
 public class Garage
 {
     private int _maxSpace;
+    public int MaxSpace
+    {
+        get => this._maxSpace;
+    }
     private int _usedSpace = 0;
+    public int UsedSpace
+    {
+        get => this._usedSpace;
+    }
     private Vehicle[] _vehicles;
     private Hashtable _amountByType;
     public Hashtable AmountsByVehicleType
@@ -24,6 +32,16 @@ public class Garage
         {
             this._amountByType.Add(type, 0);
         }
+    }
+
+    public Hashtable GetStatus()
+    {
+        return new Hashtable
+        {
+          { "total", this._maxSpace },
+          { "used",  this._usedSpace },
+          { "types", this._amountByType }
+        };
     }
 
     public Vehicle[] GetAllVehicles()
