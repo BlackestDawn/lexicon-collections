@@ -34,6 +34,16 @@ public class Garage
         }
     }
 
+    public Hashtable GetStatus()
+    {
+        return new Hashtable
+        {
+          { "total", this._maxSpace },
+          { "used",  this._usedSpace },
+          { "types", this._amountByType }
+        };
+    }
+
     public Vehicle[] GetAllVehicles()
     {
         Vehicle[] parkedVehicles = new Vehicle[this._usedSpace];
