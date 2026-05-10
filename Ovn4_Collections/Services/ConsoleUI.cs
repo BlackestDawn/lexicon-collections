@@ -28,7 +28,7 @@ public class ConsoleUI: IUIInterface
     {
         Hashtable currentStatus = this._usageStatus();
 
-        Panel totalUsage = new Panel(
+        Panel usagePanel = new Panel(
             new BreakdownChart()
                 .Width(20)
                 .AddItem("Used:", (int)currentStatus["used"], Color.Red3)
@@ -58,7 +58,7 @@ public class ConsoleUI: IUIInterface
             .AddColumns(3)
             .AddRow(
                 content ?? new Text(""),
-                Align.Center(totalUsage),
+                Align.Center(usagePanel),
                 Align.Right(typesPanel)
             );
 
