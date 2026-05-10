@@ -5,7 +5,6 @@ using Ovn4_Collections.Helpers;
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
 using Spectre.Console;
-using Spectre.Console.Rendering;
 
 namespace Ovn4_Collections.Services;
 
