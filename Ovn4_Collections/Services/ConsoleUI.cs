@@ -1,3 +1,4 @@
+using System.Collections;
 using Ovn4_Collections.Helpers;
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Vehicles;
@@ -8,28 +9,46 @@ namespace Ovn4_Collections.Services;
 
 public class ConsoleUI: IUIInterface
 {
-    // private Func _usageStats;
+    private readonly Func<Hashtable> _usageStatus;
+    private readonly Color[] _typesColor = new Color[]
+    {
+        Color.Magenta,
+        Color.LightGreen,
+        Color.Cyan,
+        Color.DarkBlue,
+        Color.LightPink4
+    };
+
+    public ConsoleUI(Func<Hashtable> getStatus)
+    {
+        this._usageStatus = getStatus;
+    }
 
     private void RenderHeader(IRenderable? content)
     {
+        Hashtable currentStatus = this._usageStatus();
+
         Panel totalUsage = new Panel(
             new BreakdownChart()
                 .Width(20)
-                .AddItem("Used:", 10, Color.Red3)
-                .AddItem("Free:", 10, Color.LightYellow3)
+                .AddItem("Used:", (int)currentStatus["used"], Color.Red3)
+                .AddItem("Free:", (int)currentStatus["total"] - (int)currentStatus["used"], Color.LightYellow3)
             )
             .Header("Space usage")
             .NoBorder()
             .Padding(2, 1);
 
-        Panel typesBreakdown = new Panel(
+        BreakdownChartItem[] typesBreakdown = new BreakdownChartItem[Enum.GetNames<VehicleTypes>().Length];
+
+        foreach (DictionaryEntry item in (Hashtable)currentStatus["types"])
+        {
+            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", (int)item.Value, this._typesColor[(int)item.Key]);
+        }
+
+        Panel typesPanel = new Panel(
             new BreakdownChart()
                 .Width(30)
-                .AddItem("Cars", 4, Color.Magenta)
-                .AddItem("Motorbikes", 1, Color.LightGreen)
-                .AddItem("Bus", 2, Color.Cyan)
-                .AddItem("Boat", 1, Color.DarkBlue)
-                .AddItem("Airplane", 2, Color.LightPink4)
+                .AddItems(typesBreakdown)
             )
             .Header("Usage by types")
             .NoBorder()
@@ -40,7 +59,7 @@ public class ConsoleUI: IUIInterface
             .AddRow(
                 content ?? new Text(""),
                 Align.Center(totalUsage),
-                Align.Right(typesBreakdown)
+                Align.Right(typesPanel)
             );
 
         Panel mainPanel = new Panel(mainGrid)

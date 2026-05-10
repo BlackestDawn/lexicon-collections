@@ -11,7 +11,7 @@ public class ManagementApp
     public ManagementApp()
     {
         this._garage = new Garage(20);
-        this._ui = new ConsoleUI();
+        this._ui = new ConsoleUI(this._garage.GetStatus);
     }
 
     public void RunApp()
