@@ -348,4 +348,16 @@ public class ConsoleUI: IUIInterface
         AnsiConsole.MarkupLine($"[red]Something went wrong:{Environment.NewLine}{message}[/]");
         PauseDisplay();
     }
+
+    public void SuccessMessage(string message)
+    {
+        AnsiConsole.MarkupLine($"[green]{message}[/]");
+        PauseDisplay();
+    }
+
+    public void WarningMessage(string message)
+      {
+        AnsiConsole.MarkupLine($"[yellow]{message}[/]");
+        PauseDisplay();
+      }
 }

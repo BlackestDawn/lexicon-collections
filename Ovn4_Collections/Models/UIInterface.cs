@@ -12,4 +12,6 @@ public interface IUIInterface
     public void ResetMenuPath();
     public void VehicleDetailsWindow(Vehicle vehicle);
     public void ErrorMessage(string message);
+    public void WarningMessage(string message);
+    public void SuccessMessage(string message);
 }
