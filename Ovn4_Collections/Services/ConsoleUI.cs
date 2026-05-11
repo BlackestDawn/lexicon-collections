@@ -363,7 +363,51 @@ public class ConsoleUI: IUIInterface
 
     public Func<Vehicle, bool> SearchInputWindow()
     {
-        throw new NotImplementedException();
+        var fields = AnsiConsole.Prompt(
+            new MultiSelectionPrompt<string>()
+                .Title("Choose fields to search on:")
+                .AddChoices([
+                    "Licence number",
+                    "Vehicle type",
+                    "Color",
+                    "Wheel count",
+                    "Max effect (HP)"
+                ])
+            );
+
+        var predicates = new List<Func<Vehicle, bool>>();
+
+        if (fields.Contains("Licence number"))
+        {
+            string value = AskForLicenceNumber();
+            predicates.Add(v => v.LicenceNumber.Contains(value, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (fields.Contains("Vehicle types"))
+        {
+            VehicleTypes value = AskForVehicleType();
+            predicates.Add(v => v.VehicleType == value);
+        }
+
+        if (fields.Contains("Wheel count"))
+        {
+            int value = AskForWheelCount();
+            predicates.Add(v => v.WheelCount == value);
+        }
+
+        if (fields.Contains("Color"))
+        {
+            string value = AskForColor();
+            predicates.Add(v => v.Color.Contains(value, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (fields.Contains("Max effect (HP)"))
+        {
+            int value = AskForEngineHP();
+            predicates.Add(v => v.Engine.MaxPowerHP == value);
+        }
+
+        return v => predicates.All(p => p(v));
     }
 
     public void SearchResultWindow(Vehicle[] vehicles)
