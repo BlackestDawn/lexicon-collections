@@ -19,7 +19,6 @@ public class Car : Vehicle
         StringBuilder sb = new StringBuilder(base.FullDescription());
 
         sb.InsertLine(1, $"Class: {this._carType}, Max speed: {this._maxSpeed} km/h");
-        sb.AppendLine("Var version");
 
         return sb.ToString();
     }

@@ -18,7 +18,6 @@ public class Bus : Vehicle
         StringBuilder sb = new StringBuilder(base.FullDescription());
 
         sb.InsertLine(1, $"Passenger capacity: {this._passengerCapacity}");
-        sb.AppendLine("Var version");
 
         return sb.ToString();
     }
