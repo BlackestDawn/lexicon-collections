@@ -12,7 +12,7 @@ public class Motorcycle(VehicleTypes vehicleType, string licenceNumber, int maxS
     {
         StringBuilder sb = new(base.FullDescription());
 
-        sb.InsertLine(1, $"Top speed: {this._maxSpeed}");
+        sb.InsertLine(1, $"Top speed: {_maxSpeed}");
 
         return sb.ToString();
     }

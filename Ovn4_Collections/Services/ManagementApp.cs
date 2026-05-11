@@ -10,33 +10,33 @@ public class ManagementApp
 
     public ManagementApp()
     {
-        this._garage = new Garage(20);
-        this._ui = new ConsoleUI(this._garage.GetStatus);
+        _garage = new Garage(20);
+        _ui = new ConsoleUI(_garage.GetStatus);
     }
 
     public void RunApp()
     {
         MainMenuOptions menuChoice;
-        this._garage.BulkLoadVehicles(TestData.testVehicles);
+        _garage.BulkLoadVehicles(TestData.testVehicles);
 
         do {
-            menuChoice = this._ui.MainMenuWindow();
+            menuChoice = _ui.MainMenuWindow();
 
             switch (menuChoice)
             {
                 case MainMenuOptions.List:
-                    var vehicle = this._ui.VehicleListSelectionWindow(this._garage.GetAllVehicles());
-                    this._ui.VehicleDetailsWindow(vehicle);
-                    this._ui.PauseDisplay();
-                    this._ui.ResetMenuPath();
+                    var vehicle = _ui.VehicleListSelectionWindow(_garage.GetAllVehicles());
+                    _ui.VehicleDetailsWindow(vehicle);
+                    _ui.PauseDisplay();
+                    _ui.ResetMenuPath();
                     break;
                 case MainMenuOptions.Add:
-                    this._garage.AddVehicle(this._ui.AddVehicleWindow());
-                    this._ui.ResetMenuPath();
+                    _garage.AddVehicle(_ui.AddVehicleWindow());
+                    _ui.ResetMenuPath();
                     break;
                 case MainMenuOptions.Remove:
-                    this._garage.RemoveVehicle(this._ui.RemoveVehicleWindow(this._garage.GetAllLicenceNumbers()));
-                    this._ui.ResetMenuPath();
+                    _garage.RemoveVehicle(_ui.RemoveVehicleWindow(_garage.GetAllLicenceNumbers()));
+                    _ui.ResetMenuPath();
                     break;
                 default:
                     break;

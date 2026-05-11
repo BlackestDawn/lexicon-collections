@@ -12,7 +12,7 @@ public class Bus(VehicleTypes vehicleType, string licenceNumber, int passangerCa
     {
         StringBuilder sb = new(base.FullDescription());
 
-        sb.InsertLine(1, $"Passenger capacity: {this._passengerCapacity}");
+        sb.InsertLine(1, $"Passenger capacity: {_passengerCapacity}");
 
         return sb.ToString();
     }

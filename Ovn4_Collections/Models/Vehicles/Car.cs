@@ -13,7 +13,7 @@ public class Car(VehicleTypes vehicleType, string licenceNumber, CarTypes carTyp
     {
         StringBuilder sb = new(base.FullDescription());
 
-        sb.InsertLine(1, $"Class: {this._carType}, Max speed: {this._maxSpeed} km/h");
+        sb.InsertLine(1, $"Class: {_carType}, Max speed: {_maxSpeed} km/h");
 
         return sb.ToString();
     }

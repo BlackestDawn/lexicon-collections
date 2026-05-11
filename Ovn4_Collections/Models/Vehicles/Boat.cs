@@ -12,7 +12,7 @@ public class Boat(VehicleTypes vehicleType, string licenceNumber, int engineCoun
     {
         StringBuilder sb = new(base.FullDescription());
 
-        sb.InsertLine(1, $"Engine count: {this._engineCount}");
+        sb.InsertLine(1, $"Engine count: {_engineCount}");
 
         return sb.ToString();
     }
