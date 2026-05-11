@@ -15,8 +15,20 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
         get => _licenceNumber;
     }
     private readonly IEngine _engine = engine;
+    public IEngine Engine
+    {
+        get => _engine;
+    }
     private readonly int _numWheels = numWheels;
+    public int WheelCount
+    {
+        get => _numWheels;
+    }
     private readonly string _color = color;
+    public string Color
+    {
+        get => _color;
+    }
 
     public override string ToString()
     {
