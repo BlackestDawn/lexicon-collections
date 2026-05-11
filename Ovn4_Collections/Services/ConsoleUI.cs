@@ -12,14 +12,14 @@ public class ConsoleUI: IUIInterface
 {
     private readonly Func<Hashtable> _usageStatus;
     private readonly Stack _menuPath = new(5);
-    private readonly Color[] _typesColor = new Color[]
-    {
+    private readonly Color[] _typesColor =
+    [
         Color.Magenta,
         Color.LightGreen,
         Color.Cyan,
         Color.DarkBlue,
         Color.LightPink4
-    };
+    ];
 
     public ConsoleUI(Func<Hashtable> getStatus)
     {
