@@ -412,6 +412,20 @@ public class ConsoleUI: IUIInterface
 
     public void SearchResultWindow(Vehicle[] vehicles)
     {
-        throw new NotImplementedException();
+        Table table = new();
+        table.AddColumns("Licence number", "type", "Engine", "Wheels", "Color");
+
+        foreach (var item in vehicles)
+        {
+            table.AddRow(
+                item.LicenceNumber,
+                item.VehicleType.ToString(),
+                item.Engine.Description,
+                item.WheelCount.ToString(),
+                item.Color
+            );
+        }
+
+        AnsiConsole.Write(table);
     }
 }
