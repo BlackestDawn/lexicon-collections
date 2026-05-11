@@ -113,7 +113,7 @@ public class ConsoleUI: IUIInterface
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
         foreach (var vehicle in vehicles)
         {
-            AnsiConsole.Write(new Text($"{vehicle}"));
+            AnsiConsole.Write(new Text($"{vehicle.FullDescription()}"));
         }
         AnsiConsole.WriteLine();
         this._menuPath.Pop();
