@@ -3,17 +3,12 @@ using Ovn4_Collections.Extensions;
 
 namespace Ovn4_Collections.Models.Vehicles;
 
-public class Boat : Vehicle
+public class Boat(VehicleTypes vehicleType, string licenceNumber, int engineCount, IEngine engine, int numWheels, string color)
+    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
-    private readonly int _engineCount;
+    private readonly int _engineCount = engineCount;
 
-    public Boat(VehicleTypes vehicleType, string licenceNumber, int engineCount, IEngine engine, int numWheels, string color)
-        : base(vehicleType, licenceNumber, engine, numWheels, color)
-    {
-        this._engineCount = engineCount;
-    }
-
-    public override string FullDescription()
+  public override string FullDescription()
     {
         StringBuilder sb = new(base.FullDescription());
 

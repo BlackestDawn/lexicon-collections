@@ -3,18 +3,13 @@ using Ovn4_Collections.Extensions;
 
 namespace Ovn4_Collections.Models.Vehicles;
 
-public class Car : Vehicle
+public class Car(VehicleTypes vehicleType, string licenceNumber, CarTypes carType, int maxSpeed, IEngine engine, int numWheels, string color)
+    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
-    private readonly CarTypes _carType;
-    private readonly int _maxSpeed;
+    private readonly CarTypes _carType = carType;
+    private readonly int _maxSpeed = maxSpeed;
 
-    public Car(VehicleTypes vehicleType, string licenceNumber, CarTypes carType, int maxSpeed, IEngine engine, int numWheels, string color)
-        : base(vehicleType, licenceNumber, engine, numWheels, color)
-    {
-        this._carType = carType;
-        this._maxSpeed = maxSpeed;
-    }
-    public override string FullDescription()
+  public override string FullDescription()
     {
         StringBuilder sb = new(base.FullDescription());
 
