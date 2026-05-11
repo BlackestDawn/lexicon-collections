@@ -18,3 +18,20 @@ public enum MainMenuOptions
     [Description("Release a vehicle")]  Remove,
     [Description("Quit")]               Quit,
 }
+
+public enum CarTypes
+{
+    SUV,
+    Sedan,
+    Hatchback,
+    [Description("Pickup Truck")]
+    Pickup,
+    [Description("Minivan / MPV")]
+    Minivan,
+    Coupe,
+    Convertible,
+    [Description("Station Wagon")]
+    Station,
+    [Description("Sports Car")]
+    Sport,
+}
