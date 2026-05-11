@@ -112,17 +112,16 @@ public class ConsoleUI: IUIInterface
         );
     }
 
-    public void VehicleListWindow(Vehicle[] vehicles)
+    public Vehicle VehicleListSelectionWindow(Vehicle[] vehicles)
     {
         this._menuPath.Push("Vehicle list");
         this.RenderHeader();
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
-        foreach (var vehicle in vehicles)
-        {
-            AnsiConsole.Write(new Text($"{vehicle.FullDescription()}"));
-        }
-        AnsiConsole.WriteLine();
-        this._menuPath.Pop();
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<Vehicle>()
+                .UseConverter(v => v.MinimalDescription())
+                .AddChoices(vehicles)
+        );
     }
 
     public string RemoveVehicleWindow(string[] licenceNumbers)
