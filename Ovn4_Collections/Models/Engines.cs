@@ -12,7 +12,7 @@ public readonly struct FuelEngine(int maxPowerHP, decimal displacementLiters, Fu
     public decimal DisplacementLiters {get; } = displacementLiters;
     public FuelTypes FuelType { get; } = fuelType;
 
-    public string Description => $"{FuelType}, {DisplacementLiters}L";
+    public string Description => $"{FuelType}, {DisplacementLiters}L, {MaxPowerHP}HP";
 }
 
 public readonly struct ElectricEngine(int maxPowerHP, decimal batteryCapacityKwh) : IEngine
@@ -20,5 +20,5 @@ public readonly struct ElectricEngine(int maxPowerHP, decimal batteryCapacityKwh
     public int MaxPowerHP { get; } = maxPowerHP;
     public decimal BatteryCapacityKwh { get; } = batteryCapacityKwh;
 
-    public string Description => $"Electric, {BatteryCapacityKwh} kWh";
+    public string Description => $"Electric, {BatteryCapacityKwh} kWh, {MaxPowerHP}HP";
 }

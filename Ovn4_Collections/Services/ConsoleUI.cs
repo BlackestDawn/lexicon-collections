@@ -96,6 +96,12 @@ public class ConsoleUI: IUIInterface
         Console.ReadKey(intercept: true);
     }
 
+    public void ResetMenuPath()
+    {
+        this._menuPath.Clear();
+        this._menuPath.Push("Main Menu");
+    }
+
     public MainMenuOptions MainMenuWindow()
     {
         this.RenderHeader();
@@ -106,17 +112,16 @@ public class ConsoleUI: IUIInterface
         );
     }
 
-    public void VehicleListWindow(Vehicle[] vehicles)
+    public Vehicle VehicleListSelectionWindow(Vehicle[] vehicles)
     {
         this._menuPath.Push("Vehicle list");
         this.RenderHeader();
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
-        foreach (var vehicle in vehicles)
-        {
-            AnsiConsole.Write(new Text($"{vehicle}"));
-        }
-        AnsiConsole.WriteLine();
-        this._menuPath.Pop();
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<Vehicle>()
+                .UseConverter(v => v.MinimalDescription())
+                .AddChoices(vehicles)
+        );
     }
 
     public string RemoveVehicleWindow(string[] licenceNumbers)
@@ -136,13 +141,67 @@ public class ConsoleUI: IUIInterface
     {
         this._menuPath.Push("Adding vehicle");
         this.RenderHeader();
-        Vehicle newVehicle = new(
-            this.AskForVehicleType(),
-            this.AskForLicenceNumber(),
-            this.AskForEngine(),
-            this.AskForWheelCount(),
-            this.AskForColor()
-        );
+
+        VehicleTypes vehicleType = this.AskForVehicleType();
+        Vehicle newVehicle;
+
+        switch (vehicleType)
+        {
+            case VehicleTypes.Car:
+                newVehicle = new Car(
+                    vehicleType,
+                    this.AskForLicenceNumber(),
+                    this.AskForCarType(),
+                    this.AskForMaxSpeed(),
+                    this.AskForEngine(),
+                    this.AskForWheelCount(),
+                    this.AskForColor()
+                );
+                break;
+            case VehicleTypes.Bus:
+                newVehicle = new Bus(
+                    vehicleType,
+                    this.AskForLicenceNumber(),
+                    this.AskForPassengerCount(),
+                    this.AskForEngine(),
+                    this.AskForWheelCount(),
+                    this.AskForColor()
+                );
+                break;
+            case VehicleTypes.Motorcycle:
+                newVehicle = new Motorcycle(
+                    vehicleType,
+                    this.AskForLicenceNumber(),
+                    this.AskForMaxSpeed(),
+                    this.AskForEngine(),
+                    this.AskForWheelCount(),
+                    this.AskForColor()
+                );
+                break;
+            case VehicleTypes.Boat:
+                newVehicle = new Boat(
+                    vehicleType,
+                    this.AskForLicenceNumber(),
+                    this.AskForEngineCount(),
+                    this.AskForEngine(),
+                    this.AskForWheelCount(),
+                    this.AskForColor()
+                );
+                break;
+            case VehicleTypes.Airplane:
+                newVehicle = new Airplane(
+                    vehicleType,
+                    this.AskForLicenceNumber(),
+                    this.AskForEngineCount(),
+                    this.AskForEngine(),
+                    this.AskForWheelCount(),
+                    this.AskForColor()
+                );
+                break;
+            default:
+                throw new ArgumentException($"Unknown vehicle type: {vehicleType}");
+        }
+
         this._menuPath.Pop();
         return newVehicle;
     }
@@ -161,6 +220,40 @@ public class ConsoleUI: IUIInterface
         return AnsiConsole.Prompt(
             new TextPrompt<string>("Enter licence number:")
                 .Validate(input => input.Length >= 6, "Must be at least 6 characters")
+            );
+    }
+
+    private CarTypes AskForCarType()
+    {
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<CarTypes>()
+                .Title("Select car type:")
+                .UseConverter(EnumHelpers.GetDescription)
+                .AddChoices(Enum.GetValues<CarTypes>())
+        );
+    }
+
+    private int AskForMaxSpeed()
+    {
+        return AnsiConsole.Prompt(
+            new TextPrompt<int>("Enter top speed of vehicle:")
+                .Validate(input => input > 0, "Must be a positive number")
+            );
+    }
+
+    private int AskForPassengerCount()
+    {
+        return AnsiConsole.Prompt(
+            new TextPrompt<int>("Enter passenger capacity:")
+                .Validate(input => input > 0, "Must be a positive number")
+            );
+    }
+
+    private int AskForEngineCount()
+    {
+        return AnsiConsole.Prompt(
+            new TextPrompt<int>("Enter number of engines:")
+                .Validate(input => input > 1, "Must have at least 1 engine")
             );
     }
 
@@ -240,5 +333,13 @@ public class ConsoleUI: IUIInterface
         return AnsiConsole.Prompt(
             new TextPrompt<string>("Enter vehicle's color:")
         );
+    }
+
+    public void VehicleDetailsWindow(Vehicle vehicle)
+    {
+        this._menuPath.Push($"{vehicle.VehicleType} details");
+        this.RenderHeader();
+
+        AnsiConsole.MarkupLine(vehicle.FullDescription());
     }
 }
