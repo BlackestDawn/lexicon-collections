@@ -1,5 +1,6 @@
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Data;
+using Ovn4_Collections.Models.Vehicles;
 
 namespace Ovn4_Collections.Services;
 
@@ -10,36 +11,70 @@ public class ManagementApp
 
     public ManagementApp()
     {
-        this._garage = new Garage(20);
-        this._ui = new ConsoleUI(this._garage.GetStatus);
+        _garage = new Garage(20);
+        _ui = new ConsoleUI(_garage.GetStatus);
     }
 
     public void RunApp()
     {
         MainMenuOptions menuChoice;
-        this._garage.BulkLoadVehicles(TestData.testVehicles);
+        _garage.BulkLoadVehicles(TestData.testVehicles);
 
         do {
-            menuChoice = this._ui.MainMenuWindow();
+            menuChoice = _ui.MainMenuWindow();
 
-            switch (menuChoice)
+            try {
+                switch (menuChoice)
+                {
+                    case MainMenuOptions.List:
+                        Vehicle[] vehicles = _garage.GetAllVehicles();
+                        if (vehicles.Length > 0)
+                        {
+                            _ui.VehicleDetailsWindow(_ui.VehicleListSelectionWindow(vehicles));
+                        }
+                        else
+                        {
+                            _ui.WarningMessage("Nothing to view, no vehicles parked.");
+                        }
+                        _ui.PauseDisplay();
+                        _ui.ResetMenuPath();
+                        break;
+                    case MainMenuOptions.Add:
+                        if (_garage.UsedSpace < _garage.MaxSpace)
+                        {
+                            Vehicle vehicle = _ui.AddVehicleWindow();
+                            _garage.AddVehicle(vehicle);
+                            _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription}' added.");
+                        }
+                        else
+                        {
+                            _ui.WarningMessage("Can't add vehicle, no more space left.");
+                        }
+                        _ui.ResetMenuPath();
+                        break;
+                    case MainMenuOptions.Remove:
+                        string[] licenses = _garage.GetAllLicenceNumbers();
+                        if (licenses.Length > 0)
+                        {
+                            string licence = _ui.RemoveVehicleWindow(licenses);
+                            _garage.RemoveVehicle(licence);
+                            _ui.SuccessMessage($"Vechile with licence number '{licence}' removed.");
+                        }
+                        else
+                        {
+                            _ui.WarningMessage("Nothing to remove, no vehicles parked.");
+                        }
+                        _ui.ResetMenuPath();
+                        break;
+                    default:
+                        _ui.ErrorMessage($"Menu option does not exist or is not implemented yet: {menuChoice}");
+                        break;
+                }
+            }
+            catch (Exception ex)
             {
-                case MainMenuOptions.List:
-                    var vehicle = this._ui.VehicleListSelectionWindow(this._garage.GetAllVehicles());
-                    this._ui.VehicleDetailsWindow(vehicle);
-                    this._ui.PauseDisplay();
-                    this._ui.ResetMenuPath();
-                    break;
-                case MainMenuOptions.Add:
-                    this._garage.AddVehicle(this._ui.AddVehicleWindow());
-                    this._ui.ResetMenuPath();
-                    break;
-                case MainMenuOptions.Remove:
-                    this._garage.RemoveVehicle(this._ui.RemoveVehicleWindow(this._garage.GetAllLicenceNumbers()));
-                    this._ui.ResetMenuPath();
-                    break;
-                default:
-                    break;
+                _ui.ErrorMessage(ex.Message);
+                _ui.ResetMenuPath();
             }
         } while (menuChoice != MainMenuOptions.Quit);
     }

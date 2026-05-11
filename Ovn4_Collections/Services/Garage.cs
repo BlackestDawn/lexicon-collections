@@ -6,31 +6,31 @@ namespace Ovn4_Collections.Services;
 
 public class Garage
 {
-    private int _maxSpace;
+    private readonly int _maxSpace;
     public int MaxSpace
     {
-        get => this._maxSpace;
+        get => _maxSpace;
     }
     private int _usedSpace = 0;
     public int UsedSpace
     {
-        get => this._usedSpace;
+        get => _usedSpace;
     }
-    private Vehicle[] _vehicles;
-    private Hashtable _amountByType;
+    private readonly Vehicle[] _vehicles;
+    private readonly Hashtable _amountByType;
     public Hashtable AmountsByVehicleType
     {
-        get => this._amountByType;
+        get => _amountByType;
     }
 
     public Garage(int maxSpace)
     {
-        this._maxSpace = maxSpace;
-        this._vehicles = new Vehicle[maxSpace];
-        this._amountByType = new Hashtable();
+        _maxSpace = maxSpace;
+        _vehicles = new Vehicle[maxSpace];
+        _amountByType = new Hashtable();
         foreach (var type in Enum.GetValues<VehicleTypes>())
         {
-            this._amountByType.Add(type, 0);
+            _amountByType.Add(type, 0);
         }
     }
 
@@ -38,17 +38,17 @@ public class Garage
     {
         return new Hashtable
         {
-          { "total", this._maxSpace },
-          { "used",  this._usedSpace },
-          { "types", this._amountByType }
+          { "total", _maxSpace },
+          { "used",  _usedSpace },
+          { "types", _amountByType }
         };
     }
 
     public Vehicle[] GetAllVehicles()
     {
-        Vehicle[] parkedVehicles = new Vehicle[this._usedSpace];
+        Vehicle[] parkedVehicles = new Vehicle[_usedSpace];
         int index = 0;
-        foreach (var vehicle in this._vehicles)
+        foreach (var vehicle in _vehicles)
         {
             if (vehicle != null)
             {
@@ -61,9 +61,9 @@ public class Garage
 
     public string[] GetAllLicenceNumbers()
     {
-        string[] licenceNumbers = new string[this._usedSpace];
+        string[] licenceNumbers = new string[_usedSpace];
         int index = 0;
-        foreach (var vehicle in this._vehicles)
+        foreach (var vehicle in _vehicles)
         {
             if (vehicle != null)
             {
@@ -81,18 +81,18 @@ public class Garage
 
     public void AddVehicle(Vehicle vehicle)
     {
-        if (this._usedSpace == this._maxSpace)
+        if (_usedSpace == _maxSpace)
         {
             throw new ArgumentException("Space is full");
         }
-        for (int i = 0; i < this._maxSpace; i++)
+        for (int i = 0; i < _maxSpace; i++)
         {
-            if (this._vehicles[i] == null)
+            if (_vehicles[i] == null)
             {
                 var vehicleType = vehicle.VehicleType;
-                this._amountByType[vehicleType] = (int)this._amountByType[vehicleType] + 1;
-                this._vehicles[i] = vehicle;
-                this._usedSpace++;
+                _amountByType[vehicleType] = (int)_amountByType[vehicleType] + 1;
+                _vehicles[i] = vehicle;
+                _usedSpace++;
                 return;
             }
         }
@@ -100,18 +100,18 @@ public class Garage
 
     public void RemoveVehicle(string licenceNumber)
     {
-        if (this._usedSpace == 0)
+        if (_usedSpace == 0)
         {
             throw new ArgumentException("Space is empty");
         }
-        for (int i = 0; i < this._maxSpace; i++)
+        for (int i = 0; i < _maxSpace; i++)
         {
-            if (this._vehicles[i] != null && this._vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
+            if (_vehicles[i] != null && _vehicles[i].LicenceNumber.ToLower() == licenceNumber.ToLower())
             {
-                var vehicleType = this._vehicles[i].VehicleType;
-                this._amountByType[vehicleType] = (int)this._amountByType[vehicleType] - 1;
-                this._vehicles[i] = null;
-                this._usedSpace--;
+                var vehicleType = _vehicles[i].VehicleType;
+                _amountByType[vehicleType] = (int)_amountByType[vehicleType] - 1;
+                _vehicles[i] = null;
+                _usedSpace--;
                 return;
             }
         }
@@ -123,7 +123,7 @@ public class Garage
         try {
             foreach (var vehicle in vehicles)
             {
-                this.AddVehicle(vehicle);
+                AddVehicle(vehicle);
             }
         }
         catch (ArgumentException ex)

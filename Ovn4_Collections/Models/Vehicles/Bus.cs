@@ -3,21 +3,16 @@ using Ovn4_Collections.Extensions;
 
 namespace Ovn4_Collections.Models.Vehicles;
 
-public class Bus : Vehicle
+public class Bus(VehicleTypes vehicleType, string licenceNumber, int passangerCapacity, IEngine engine, int numWheels, string color)
+    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
-    private int _passengerCapacity;
+    private readonly int _passengerCapacity = passangerCapacity;
 
-    public Bus(VehicleTypes vehicleType, string licenceNumber, int passangerCapacity, IEngine engine, int numWheels, string color)
-        : base(vehicleType, licenceNumber, engine, numWheels, color)
+  public override string FullDescription()
     {
-        this._passengerCapacity = passangerCapacity;
-    }
+        StringBuilder sb = new(base.FullDescription());
 
-    public override string FullDescription()
-    {
-        StringBuilder sb = new StringBuilder(base.FullDescription());
-
-        sb.InsertLine(1, $"Passenger capacity: {this._passengerCapacity}");
+        sb.InsertLine(1, $"Passenger capacity: {_passengerCapacity}");
 
         return sb.ToString();
     }

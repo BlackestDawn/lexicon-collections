@@ -4,23 +4,23 @@ namespace Ovn4_Collections.Models.Vehicles;
 
 public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color)
 {
-    private VehicleTypes _vehicleType = vehicleType;
+    private readonly VehicleTypes _vehicleType = vehicleType;
     public VehicleTypes VehicleType
     {
-        get => this._vehicleType;
+        get => _vehicleType;
     }
-    private string _licenceNumber = licenceNumber;
+    private readonly string _licenceNumber = licenceNumber;
     public string LicenceNumber
     {
         get => _licenceNumber;
     }
-    private IEngine _engine = engine;
-    private int _numWheels = numWheels;
-    private string _color = color;
+    private readonly IEngine _engine = engine;
+    private readonly int _numWheels = numWheels;
+    private readonly string _color = color;
 
     public override string ToString()
     {
-        return $"Licence number: {this._licenceNumber}\nEngine: {this._engine.Description}\nColor: {this._color}";
+        return $"Licence number: {_licenceNumber}\nEngine: {_engine.Description}\nColor: {_color}";
     }
 
     public override bool Equals(object? obj)
@@ -33,17 +33,17 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
 
     public string MinimalDescription()
     {
-        return $"Licence: {this._licenceNumber}, Type: {this._vehicleType}";
+        return $"Licence: {_licenceNumber}, Type: {_vehicleType}";
     }
 
     public virtual string FullDescription()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
 
-        string wheelsDescriptionPart = this._numWheels > 0 ? $", Wheels: {this._numWheels}" : "";
-        sb.AppendLine(this.MinimalDescription());
-        sb.AppendLine($"Color: {this._color}{wheelsDescriptionPart}");
-        sb.AppendLine($"Engine: {this._engine.Description}");
+        string wheelsDescriptionPart = _numWheels > 0 ? $", Wheels: {_numWheels}" : "";
+        sb.AppendLine(MinimalDescription());
+        sb.AppendLine($"Color: {_color}{wheelsDescriptionPart}");
+        sb.AppendLine($"Engine: {_engine.Description}");
 
         return sb.ToString();
     }

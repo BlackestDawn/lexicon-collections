@@ -3,21 +3,16 @@ using Ovn4_Collections.Extensions;
 
 namespace Ovn4_Collections.Models.Vehicles;
 
-public class Motorcycle : Vehicle
+public class Motorcycle(VehicleTypes vehicleType, string licenceNumber, int maxSpeed, IEngine engine, int numWheels, string color)
+    : Vehicle(vehicleType, licenceNumber, engine, numWheels, color)
 {
-    private int _maxSpeed;
+    private readonly int _maxSpeed = maxSpeed;
 
-    public Motorcycle(VehicleTypes vehicleType, string licenceNumber, int maxSpeed, IEngine engine, int numWheels, string color)
-        : base(vehicleType, licenceNumber, engine, numWheels, color)
+  public override string FullDescription()
     {
-        this._maxSpeed = maxSpeed;
-    }
+        StringBuilder sb = new(base.FullDescription());
 
-    public override string FullDescription()
-    {
-        StringBuilder sb = new StringBuilder(base.FullDescription());
-
-        sb.InsertLine(1, $"Top speed: {this._maxSpeed}");
+        sb.InsertLine(1, $"Top speed: {_maxSpeed}");
 
         return sb.ToString();
     }

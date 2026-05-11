@@ -11,27 +11,27 @@ namespace Ovn4_Collections.Services;
 public class ConsoleUI: IUIInterface
 {
     private readonly Func<Hashtable> _usageStatus;
-    private Stack _menuPath = new Stack(5);
-    private readonly Color[] _typesColor = new Color[]
-    {
+    private readonly Stack _menuPath = new(5);
+    private readonly Color[] _typesColor =
+    [
         Color.Magenta,
         Color.LightGreen,
         Color.Cyan,
         Color.DarkBlue,
         Color.LightPink4
-    };
+    ];
 
     public ConsoleUI(Func<Hashtable> getStatus)
     {
-        this._usageStatus = getStatus;
-        this._menuPath.Push("Main Menu");
+        _usageStatus = getStatus;
+        _menuPath.Push("Main Menu");
     }
 
     private void RenderHeader()
     {
-        StringBuilder menuPathSB = new StringBuilder();
-        int depthCounter = this._menuPath.Count;
-        foreach (string item in this._menuPath)
+        StringBuilder menuPathSB = new();
+        int depthCounter = _menuPath.Count;
+        foreach (string item in _menuPath)
         {
             menuPathSB.PrependLine($"{new String(' ', 2 * depthCounter)}{item}");
             depthCounter--;
@@ -43,7 +43,7 @@ public class ConsoleUI: IUIInterface
             .NoBorder()
             .Padding(0, 2);
 
-        Hashtable currentStatus = this._usageStatus();
+        Hashtable currentStatus = _usageStatus();
 
         Panel usagePanel = new Panel(
             new BreakdownChart()
@@ -59,7 +59,7 @@ public class ConsoleUI: IUIInterface
 
         foreach (DictionaryEntry item in (Hashtable)currentStatus["types"])
         {
-            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", (int)item.Value, this._typesColor[(int)item.Key]);
+            typesBreakdown[(int)item.Key] = new BreakdownChartItem($"{item.Key}", (int)item.Value, _typesColor[(int)item.Key]);
         }
 
         Panel typesPanel = new Panel(
@@ -98,13 +98,13 @@ public class ConsoleUI: IUIInterface
 
     public void ResetMenuPath()
     {
-        this._menuPath.Clear();
-        this._menuPath.Push("Main Menu");
+        _menuPath.Clear();
+        _menuPath.Push("Main Menu");
     }
 
     public MainMenuOptions MainMenuWindow()
     {
-        this.RenderHeader();
+        RenderHeader();
         return AnsiConsole.Prompt(
             new SelectionPrompt<MainMenuOptions>()
                 .UseConverter(EnumHelpers.GetDescription)
@@ -114,8 +114,8 @@ public class ConsoleUI: IUIInterface
 
     public Vehicle VehicleListSelectionWindow(Vehicle[] vehicles)
     {
-        this._menuPath.Push("Vehicle list");
-        this.RenderHeader();
+        _menuPath.Push("Vehicle list");
+        RenderHeader();
         AnsiConsole.Write(new Text("All parked vehicles:\n"));
         return AnsiConsole.Prompt(
             new SelectionPrompt<Vehicle>()
@@ -126,23 +126,23 @@ public class ConsoleUI: IUIInterface
 
     public string RemoveVehicleWindow(string[] licenceNumbers)
     {
-        this._menuPath.Push("Releasing vehicle");
-        this.RenderHeader();
+        _menuPath.Push("Releasing vehicle");
+        RenderHeader();
         string licenceNumber = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Select vehicle to release:")
                 .AddChoices(licenceNumbers)
         );
-        this._menuPath.Pop();
+        _menuPath.Pop();
         return licenceNumber;
     }
 
     public Vehicle AddVehicleWindow()
     {
-        this._menuPath.Push("Adding vehicle");
-        this.RenderHeader();
+        _menuPath.Push("Adding vehicle");
+        RenderHeader();
 
-        VehicleTypes vehicleType = this.AskForVehicleType();
+        VehicleTypes vehicleType = AskForVehicleType();
         Vehicle newVehicle;
 
         switch (vehicleType)
@@ -150,59 +150,59 @@ public class ConsoleUI: IUIInterface
             case VehicleTypes.Car:
                 newVehicle = new Car(
                     vehicleType,
-                    this.AskForLicenceNumber(),
-                    this.AskForCarType(),
-                    this.AskForMaxSpeed(),
-                    this.AskForEngine(),
-                    this.AskForWheelCount(),
-                    this.AskForColor()
+                    AskForLicenceNumber(),
+                    AskForCarType(),
+                    AskForMaxSpeed(),
+                    AskForEngine(),
+                    AskForWheelCount(),
+                    AskForColor()
                 );
                 break;
             case VehicleTypes.Bus:
                 newVehicle = new Bus(
                     vehicleType,
-                    this.AskForLicenceNumber(),
-                    this.AskForPassengerCount(),
-                    this.AskForEngine(),
-                    this.AskForWheelCount(),
-                    this.AskForColor()
+                    AskForLicenceNumber(),
+                    AskForPassengerCount(),
+                    AskForEngine(),
+                    AskForWheelCount(),
+                    AskForColor()
                 );
                 break;
             case VehicleTypes.Motorcycle:
                 newVehicle = new Motorcycle(
                     vehicleType,
-                    this.AskForLicenceNumber(),
-                    this.AskForMaxSpeed(),
-                    this.AskForEngine(),
-                    this.AskForWheelCount(),
-                    this.AskForColor()
+                    AskForLicenceNumber(),
+                    AskForMaxSpeed(),
+                    AskForEngine(),
+                    AskForWheelCount(),
+                    AskForColor()
                 );
                 break;
             case VehicleTypes.Boat:
                 newVehicle = new Boat(
                     vehicleType,
-                    this.AskForLicenceNumber(),
-                    this.AskForEngineCount(),
-                    this.AskForEngine(),
-                    this.AskForWheelCount(),
-                    this.AskForColor()
+                    AskForLicenceNumber(),
+                    AskForEngineCount(),
+                    AskForEngine(),
+                    AskForWheelCount(),
+                    AskForColor()
                 );
                 break;
             case VehicleTypes.Airplane:
                 newVehicle = new Airplane(
                     vehicleType,
-                    this.AskForLicenceNumber(),
-                    this.AskForEngineCount(),
-                    this.AskForEngine(),
-                    this.AskForWheelCount(),
-                    this.AskForColor()
+                    AskForLicenceNumber(),
+                    AskForEngineCount(),
+                    AskForEngine(),
+                    AskForWheelCount(),
+                    AskForColor()
                 );
                 break;
             default:
                 throw new ArgumentException($"Unknown vehicle type: {vehicleType}");
         }
 
-        this._menuPath.Pop();
+        _menuPath.Pop();
         return newVehicle;
     }
 
@@ -259,21 +259,21 @@ public class ConsoleUI: IUIInterface
 
     private IEngine AskForEngine()
     {
-        var engineSelection = this.AskForEngineType();
+        var engineSelection = AskForEngineType();
 
         if (engineSelection == "Fuel based")
         {
             return new FuelEngine(
-                this.AskForEngineHP(),
-                this.AskForEngineDisplacementVolume(),
-                this.AskForEngineFuelType()
+                AskForEngineHP(),
+                AskForEngineDisplacementVolume(),
+                AskForEngineFuelType()
             );
         }
         else
         {
             return new ElectricEngine(
-                this.AskForEngineHP(),
-                this.AskForEngineBatteryCapacity()
+                AskForEngineHP(),
+                AskForEngineBatteryCapacity()
             );
         }
     }
@@ -337,9 +337,27 @@ public class ConsoleUI: IUIInterface
 
     public void VehicleDetailsWindow(Vehicle vehicle)
     {
-        this._menuPath.Push($"{vehicle.VehicleType} details");
-        this.RenderHeader();
+        _menuPath.Push($"{vehicle.VehicleType} details");
+        RenderHeader();
 
         AnsiConsole.MarkupLine(vehicle.FullDescription());
     }
+
+    public void ErrorMessage(string message)
+    {
+        AnsiConsole.MarkupLine($"[red]Something went wrong:{Environment.NewLine}{message}[/]");
+        PauseDisplay();
+    }
+
+    public void SuccessMessage(string message)
+    {
+        AnsiConsole.MarkupLine($"[green]{message}[/]");
+        PauseDisplay();
+    }
+
+    public void WarningMessage(string message)
+      {
+        AnsiConsole.MarkupLine($"[yellow]{message}[/]");
+        PauseDisplay();
+      }
 }
