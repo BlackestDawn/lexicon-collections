@@ -1,5 +1,6 @@
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Data;
+using Ovn4_Collections.Models.Vehicles;
 
 namespace Ovn4_Collections.Services;
 
@@ -26,17 +27,43 @@ public class ManagementApp
                 switch (menuChoice)
                 {
                     case MainMenuOptions.List:
-                        var vehicle = _ui.VehicleListSelectionWindow(_garage.GetAllVehicles());
-                        _ui.VehicleDetailsWindow(vehicle);
+                        Vehicle[] vehicles = _garage.GetAllVehicles();
+                        if (vehicles.Length > 0)
+                        {
+                            _ui.VehicleDetailsWindow(_ui.VehicleListSelectionWindow(vehicles));
+                        }
+                        else
+                        {
+                            _ui.WarningMessage("Nothing to view, no vehicles parked.");
+                        }
                         _ui.PauseDisplay();
                         _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Add:
-                        _garage.AddVehicle(_ui.AddVehicleWindow());
+                        if (_garage.UsedSpace < _garage.MaxSpace)
+                        {
+                            Vehicle vehicle = _ui.AddVehicleWindow();
+                            _garage.AddVehicle(vehicle);
+                            _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription}' added.");
+                        }
+                        else
+                        {
+                            _ui.WarningMessage("Can't add vehicle, no more space left.");
+                        }
                         _ui.ResetMenuPath();
                         break;
                     case MainMenuOptions.Remove:
-                        _garage.RemoveVehicle(_ui.RemoveVehicleWindow(_garage.GetAllLicenceNumbers()));
+                        string[] licenses = _garage.GetAllLicenceNumbers();
+                        if (licenses.Length > 0)
+                        {
+                            string licence = _ui.RemoveVehicleWindow(licenses);
+                            _garage.RemoveVehicle(licence);
+                            _ui.SuccessMessage($"Vechile with licence number '{licence}' removed.");
+                        }
+                        else
+                        {
+                            _ui.WarningMessage("Nothing to remove, no vehicles parked.");
+                        }
                         _ui.ResetMenuPath();
                         break;
                     default:
