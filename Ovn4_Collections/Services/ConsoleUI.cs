@@ -11,7 +11,7 @@ namespace Ovn4_Collections.Services;
 public class ConsoleUI: IUIInterface
 {
     private readonly Func<Hashtable> _usageStatus;
-    private Stack _menuPath = new Stack(5);
+    private Stack _menuPath = new(5);
     private readonly Color[] _typesColor = new Color[]
     {
         Color.Magenta,
@@ -29,7 +29,7 @@ public class ConsoleUI: IUIInterface
 
     private void RenderHeader()
     {
-        StringBuilder menuPathSB = new StringBuilder();
+        StringBuilder menuPathSB = new();
         int depthCounter = this._menuPath.Count;
         foreach (string item in this._menuPath)
         {

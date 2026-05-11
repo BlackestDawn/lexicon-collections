@@ -38,7 +38,7 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
 
     public virtual string FullDescription()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
 
         string wheelsDescriptionPart = this._numWheels > 0 ? $", Wheels: {this._numWheels}" : "";
         sb.AppendLine(this.MinimalDescription());

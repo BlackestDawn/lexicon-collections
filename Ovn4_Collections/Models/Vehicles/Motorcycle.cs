@@ -15,7 +15,7 @@ public class Motorcycle : Vehicle
 
     public override string FullDescription()
     {
-        StringBuilder sb = new StringBuilder(base.FullDescription());
+        StringBuilder sb = new(base.FullDescription());
 
         sb.InsertLine(1, $"Top speed: {this._maxSpeed}");
 

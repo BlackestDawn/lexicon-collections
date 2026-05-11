@@ -15,7 +15,7 @@ public class Bus : Vehicle
 
     public override string FullDescription()
     {
-        StringBuilder sb = new StringBuilder(base.FullDescription());
+        StringBuilder sb = new(base.FullDescription());
 
         sb.InsertLine(1, $"Passenger capacity: {this._passengerCapacity}");
 
