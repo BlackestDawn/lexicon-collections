@@ -67,6 +67,7 @@ public class ManagementApp
                         _ui.ResetMenuPath();
                         break;
                     default:
+                        _ui.ErrorMessage($"Menu option does not exist or is not implemented yet: {menuChoice}");
                         break;
                 }
             }
