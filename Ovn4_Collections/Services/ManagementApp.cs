@@ -22,24 +22,31 @@ public class ManagementApp
         do {
             menuChoice = _ui.MainMenuWindow();
 
-            switch (menuChoice)
+            try {
+                switch (menuChoice)
+                {
+                    case MainMenuOptions.List:
+                        var vehicle = _ui.VehicleListSelectionWindow(_garage.GetAllVehicles());
+                        _ui.VehicleDetailsWindow(vehicle);
+                        _ui.PauseDisplay();
+                        _ui.ResetMenuPath();
+                        break;
+                    case MainMenuOptions.Add:
+                        _garage.AddVehicle(_ui.AddVehicleWindow());
+                        _ui.ResetMenuPath();
+                        break;
+                    case MainMenuOptions.Remove:
+                        _garage.RemoveVehicle(_ui.RemoveVehicleWindow(_garage.GetAllLicenceNumbers()));
+                        _ui.ResetMenuPath();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
             {
-                case MainMenuOptions.List:
-                    var vehicle = _ui.VehicleListSelectionWindow(_garage.GetAllVehicles());
-                    _ui.VehicleDetailsWindow(vehicle);
-                    _ui.PauseDisplay();
-                    _ui.ResetMenuPath();
-                    break;
-                case MainMenuOptions.Add:
-                    _garage.AddVehicle(_ui.AddVehicleWindow());
-                    _ui.ResetMenuPath();
-                    break;
-                case MainMenuOptions.Remove:
-                    _garage.RemoveVehicle(_ui.RemoveVehicleWindow(_garage.GetAllLicenceNumbers()));
-                    _ui.ResetMenuPath();
-                    break;
-                default:
-                    break;
+                _ui.ErrorMessage(ex.Message);
+                _ui.ResetMenuPath();
             }
         } while (menuChoice != MainMenuOptions.Quit);
     }

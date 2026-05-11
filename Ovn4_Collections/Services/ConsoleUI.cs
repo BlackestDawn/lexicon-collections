@@ -342,4 +342,10 @@ public class ConsoleUI: IUIInterface
 
         AnsiConsole.MarkupLine(vehicle.FullDescription());
     }
+
+    public void ErrorMessage(string message)
+    {
+        AnsiConsole.MarkupLine($"[red]Something went wrong:{Environment.NewLine}{message}[/]");
+        PauseDisplay();
+    }
 }
