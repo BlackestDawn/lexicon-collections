@@ -361,8 +361,11 @@ public class ConsoleUI: IUIInterface
         PauseDisplay();
     }
 
-    public Func<Vehicle, bool> SearchInputWindow()
+    public Func<Vehicle, bool>? SearchInputWindow()
     {
+        _menuPath.Push("Search terms");
+        RenderHeader();
+
         var fields = AnsiConsole.Prompt(
             new MultiSelectionPrompt<string>()
                 .Title("Choose fields to search on:")
@@ -383,7 +386,7 @@ public class ConsoleUI: IUIInterface
             predicates.Add(v => v.LicenceNumber.Contains(value, StringComparison.OrdinalIgnoreCase));
         }
 
-        if (fields.Contains("Vehicle types"))
+        if (fields.Contains("Vehicle type"))
         {
             VehicleTypes value = AskForVehicleType();
             predicates.Add(v => v.VehicleType == value);
@@ -407,11 +410,20 @@ public class ConsoleUI: IUIInterface
             predicates.Add(v => v.Engine.MaxPowerHP == value);
         }
 
+        _menuPath.Pop();
+
+        if (predicates.Count() == 0)
+        {
+            return null;
+        }
         return v => predicates.All(p => p(v));
     }
 
     public void SearchResultWindow(Vehicle[] vehicles)
     {
+        _menuPath.Push("Search result");
+        RenderHeader();
+
         Table table = new();
         table.AddColumns("Licence number", "type", "Engine", "Wheels", "Color");
 
@@ -425,6 +437,8 @@ public class ConsoleUI: IUIInterface
                 item.Color
             );
         }
+
+        _menuPath.Pop();
 
         AnsiConsole.Write(table);
     }

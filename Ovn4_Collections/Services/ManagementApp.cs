@@ -1,6 +1,7 @@
 using Ovn4_Collections.Models;
 using Ovn4_Collections.Models.Data;
 using Ovn4_Collections.Models.Vehicles;
+using Spectre.Console;
 
 namespace Ovn4_Collections.Services;
 
@@ -26,6 +27,9 @@ public class ManagementApp
             try {
                 switch (menuChoice)
                 {
+                    case MainMenuOptions.Quit:
+                        AnsiConsole.MarkupLine("Exiting");
+                        break;
                     case MainMenuOptions.List:
                         Vehicle[] vehicles = _garage.GetAllVehicles();
                         if (vehicles.Length > 0)
@@ -63,6 +67,27 @@ public class ManagementApp
                         else
                         {
                             _ui.WarningMessage("Nothing to remove, no vehicles parked.");
+                        }
+                        _ui.ResetMenuPath();
+                        break;
+                    case MainMenuOptions.Search:
+                        var searchParams = _ui.SearchInputWindow();
+                        if (searchParams != null)
+                        {
+                            Vehicle[] result = _garage.FindVehicles(searchParams);
+                            if (result.Length > 0)
+                            {
+                                _ui.SearchResultWindow(result);
+                                _ui.PauseDisplay();
+                            }
+                            else
+                            {
+                                _ui.WarningMessage("No vehicles found");
+                            }
+                        }
+                        else
+                        {
+                            _ui.WarningMessage("No search terms specified");
                         }
                         _ui.ResetMenuPath();
                         break;
