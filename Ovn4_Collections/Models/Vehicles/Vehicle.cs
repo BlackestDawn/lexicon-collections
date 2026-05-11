@@ -21,11 +21,11 @@ public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine eng
         return $"Licence number: {this._licenceNumber}\nEngine: {this._engine.Description}\nColor: {this._color}";
     }
 
-  public override bool Equals(object? obj)
-    {
-        if (obj is not Vehicle other) return false;
-        return LicenceNumber == other.LicenceNumber;
-    }
+    public override bool Equals(object? obj)
+        {
+            if (obj is not Vehicle other) return false;
+            return LicenceNumber == other.LicenceNumber;
+        }
 
     public override int GetHashCode() => LicenceNumber.GetHashCode();
 }
