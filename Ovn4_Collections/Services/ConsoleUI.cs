@@ -356,8 +356,18 @@ public class ConsoleUI: IUIInterface
     }
 
     public void WarningMessage(string message)
-      {
+    {
         AnsiConsole.MarkupLine($"[yellow]{message}[/]");
         PauseDisplay();
-      }
+    }
+
+    public Func<Vehicle, bool> SearchInputWindow()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SearchResultWindow(Vehicle[] vehicles)
+    {
+        throw new NotImplementedException();
+    }
 }
