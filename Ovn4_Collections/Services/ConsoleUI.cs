@@ -246,4 +246,12 @@ public class ConsoleUI: IUIInterface
             new TextPrompt<string>("Enter vehicle's color:")
         );
     }
+
+    public void VehicleDetailsWindow(Vehicle vehicle)
+    {
+        this._menuPath.Push($"{vehicle.VehicleType} details");
+        this.RenderHeader();
+
+        AnsiConsole.MarkupLine(vehicle.FullDescription());
+    }
 }

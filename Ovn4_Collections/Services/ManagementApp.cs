@@ -25,7 +25,8 @@ public class ManagementApp
             switch (menuChoice)
             {
                 case MainMenuOptions.List:
-                    this._ui.VehicleListSelectionWindow(this._garage.GetAllVehicles());
+                    var vehicle = this._ui.VehicleListSelectionWindow(this._garage.GetAllVehicles());
+                    this._ui.VehicleDetailsWindow(vehicle);
                     this._ui.PauseDisplay();
                     this._ui.ResetMenuPath();
                     break;
