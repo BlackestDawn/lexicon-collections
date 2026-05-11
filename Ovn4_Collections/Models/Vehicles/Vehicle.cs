@@ -4,19 +4,19 @@ namespace Ovn4_Collections.Models.Vehicles;
 
 public class Vehicle(VehicleTypes vehicleType, string licenceNumber, IEngine engine, int numWheels, string color)
 {
-    private VehicleTypes _vehicleType = vehicleType;
+    private readonly VehicleTypes _vehicleType = vehicleType;
     public VehicleTypes VehicleType
     {
         get => this._vehicleType;
     }
-    private string _licenceNumber = licenceNumber;
+    private readonly string _licenceNumber = licenceNumber;
     public string LicenceNumber
     {
         get => _licenceNumber;
     }
-    private IEngine _engine = engine;
-    private int _numWheels = numWheels;
-    private string _color = color;
+    private readonly IEngine _engine = engine;
+    private readonly int _numWheels = numWheels;
+    private readonly string _color = color;
 
     public override string ToString()
     {

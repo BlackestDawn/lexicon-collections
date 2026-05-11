@@ -6,7 +6,7 @@ namespace Ovn4_Collections.Services;
 
 public class Garage
 {
-    private int _maxSpace;
+    private readonly int _maxSpace;
     public int MaxSpace
     {
         get => this._maxSpace;
@@ -16,8 +16,8 @@ public class Garage
     {
         get => this._usedSpace;
     }
-    private Vehicle[] _vehicles;
-    private Hashtable _amountByType;
+    private readonly Vehicle[] _vehicles;
+    private readonly Hashtable _amountByType;
     public Hashtable AmountsByVehicleType
     {
         get => this._amountByType;

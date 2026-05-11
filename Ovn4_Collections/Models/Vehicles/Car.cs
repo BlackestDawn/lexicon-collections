@@ -5,8 +5,8 @@ namespace Ovn4_Collections.Models.Vehicles;
 
 public class Car : Vehicle
 {
-    private CarTypes _carType;
-    private int _maxSpeed;
+    private readonly CarTypes _carType;
+    private readonly int _maxSpeed;
 
     public Car(VehicleTypes vehicleType, string licenceNumber, CarTypes carType, int maxSpeed, IEngine engine, int numWheels, string color)
         : base(vehicleType, licenceNumber, engine, numWheels, color)

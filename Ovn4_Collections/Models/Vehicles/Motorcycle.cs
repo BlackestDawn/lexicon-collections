@@ -5,7 +5,7 @@ namespace Ovn4_Collections.Models.Vehicles;
 
 public class Motorcycle : Vehicle
 {
-    private int _maxSpeed;
+    private readonly int _maxSpeed;
 
     public Motorcycle(VehicleTypes vehicleType, string licenceNumber, int maxSpeed, IEngine engine, int numWheels, string color)
         : base(vehicleType, licenceNumber, engine, numWheels, color)

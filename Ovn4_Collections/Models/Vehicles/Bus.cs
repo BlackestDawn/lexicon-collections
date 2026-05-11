@@ -5,7 +5,7 @@ namespace Ovn4_Collections.Models.Vehicles;
 
 public class Bus : Vehicle
 {
-    private int _passengerCapacity;
+    private readonly int _passengerCapacity;
 
     public Bus(VehicleTypes vehicleType, string licenceNumber, int passangerCapacity, IEngine engine, int numWheels, string color)
         : base(vehicleType, licenceNumber, engine, numWheels, color)

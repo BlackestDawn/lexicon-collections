@@ -5,7 +5,7 @@ namespace Ovn4_Collections.Models.Vehicles;
 
 public class Airplane : Vehicle
 {
-    private int _engineCount;
+    private readonly int _engineCount;
 
     public Airplane(VehicleTypes vehicleType, string licenceNumber, int engineCount, IEngine engine, int numWheels, string color)
         : base(vehicleType, licenceNumber, engine, numWheels, color)

@@ -5,7 +5,7 @@ namespace Ovn4_Collections.Models.Vehicles;
 
 public class Boat : Vehicle
 {
-    private int _engineCount;
+    private readonly int _engineCount;
 
     public Boat(VehicleTypes vehicleType, string licenceNumber, int engineCount, IEngine engine, int numWheels, string color)
         : base(vehicleType, licenceNumber, engine, numWheels, color)

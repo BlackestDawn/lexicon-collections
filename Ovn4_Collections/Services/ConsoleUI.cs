@@ -11,7 +11,7 @@ namespace Ovn4_Collections.Services;
 public class ConsoleUI: IUIInterface
 {
     private readonly Func<Hashtable> _usageStatus;
-    private Stack _menuPath = new(5);
+    private readonly Stack _menuPath = new(5);
     private readonly Color[] _typesColor = new Color[]
     {
         Color.Magenta,
