@@ -96,6 +96,12 @@ public class ConsoleUI: IUIInterface
         Console.ReadKey(intercept: true);
     }
 
+    public void ResetMenuPath()
+    {
+        this._menuPath.Clear();
+        this._menuPath.Push("Main Menu");
+    }
+
     public MainMenuOptions MainMenuWindow()
     {
         this.RenderHeader();

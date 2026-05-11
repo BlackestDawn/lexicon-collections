@@ -27,12 +27,15 @@ public class ManagementApp
                 case MainMenuOptions.List:
                     this._ui.VehicleListWindow(this._garage.GetAllVehicles());
                     this._ui.PauseDisplay();
+                    this._ui.ResetMenuPath();
                     break;
                 case MainMenuOptions.Add:
                     this._garage.AddVehicle(this._ui.AddVehicleWindow());
+                    this._ui.ResetMenuPath();
                     break;
                 case MainMenuOptions.Remove:
                     this._garage.RemoveVehicle(this._ui.RemoveVehicleWindow(this._garage.GetAllLicenceNumbers()));
+                    this._ui.ResetMenuPath();
                     break;
                 default:
                     break;
