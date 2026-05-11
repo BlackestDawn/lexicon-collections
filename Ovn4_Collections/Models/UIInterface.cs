@@ -14,4 +14,6 @@ public interface IUIInterface
     public void ErrorMessage(string message);
     public void WarningMessage(string message);
     public void SuccessMessage(string message);
+    public Func<Vehicle, bool>? SearchInputWindow();
+    public void SearchResultWindow(Vehicle[] vehicles);
 }

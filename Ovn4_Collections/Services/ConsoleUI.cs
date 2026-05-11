@@ -356,8 +356,90 @@ public class ConsoleUI: IUIInterface
     }
 
     public void WarningMessage(string message)
-      {
+    {
         AnsiConsole.MarkupLine($"[yellow]{message}[/]");
         PauseDisplay();
-      }
+    }
+
+    public Func<Vehicle, bool>? SearchInputWindow()
+    {
+        _menuPath.Push("Search terms");
+        RenderHeader();
+
+        var fields = AnsiConsole.Prompt(
+            new MultiSelectionPrompt<string>()
+                .Title("Choose fields to search on:")
+                .AddChoices([
+                    "Licence number",
+                    "Vehicle type",
+                    "Color",
+                    "Wheel count",
+                    "Max effect (HP)"
+                ])
+            );
+
+        var predicates = new List<Func<Vehicle, bool>>();
+
+        if (fields.Contains("Licence number"))
+        {
+            string value = AskForLicenceNumber();
+            predicates.Add(v => v.LicenceNumber.Contains(value, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (fields.Contains("Vehicle type"))
+        {
+            VehicleTypes value = AskForVehicleType();
+            predicates.Add(v => v.VehicleType == value);
+        }
+
+        if (fields.Contains("Wheel count"))
+        {
+            int value = AskForWheelCount();
+            predicates.Add(v => v.WheelCount == value);
+        }
+
+        if (fields.Contains("Color"))
+        {
+            string value = AskForColor();
+            predicates.Add(v => v.Color.Contains(value, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (fields.Contains("Max effect (HP)"))
+        {
+            int value = AskForEngineHP();
+            predicates.Add(v => v.Engine.MaxPowerHP == value);
+        }
+
+        _menuPath.Pop();
+
+        if (predicates.Count() == 0)
+        {
+            return null;
+        }
+        return v => predicates.All(p => p(v));
+    }
+
+    public void SearchResultWindow(Vehicle[] vehicles)
+    {
+        _menuPath.Push("Search result");
+        RenderHeader();
+
+        Table table = new();
+        table.AddColumns("Licence number", "type", "Engine", "Wheels", "Color");
+
+        foreach (var item in vehicles)
+        {
+            table.AddRow(
+                item.LicenceNumber,
+                item.VehicleType.ToString(),
+                item.Engine.Description,
+                item.WheelCount.ToString(),
+                item.Color
+            );
+        }
+
+        _menuPath.Pop();
+
+        AnsiConsole.Write(table);
+    }
 }

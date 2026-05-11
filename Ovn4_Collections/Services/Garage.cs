@@ -132,8 +132,8 @@ public class Garage
         }
     }
 
-    public Vehicle FindByLicenceNumber(string licenceNumber)
+    public Vehicle[] FindVehicles(Func<Vehicle, bool> predicate)
     {
-        throw new NotImplementedException();
+        return [.. _vehicles.Where(v => v != null && predicate(v))];
     }
 }
