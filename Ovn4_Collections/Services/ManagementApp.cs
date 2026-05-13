@@ -48,7 +48,7 @@ public class ManagementApp
                         {
                             Vehicle vehicle = _ui.AddVehicleWindow();
                             _garage.AddVehicle(vehicle);
-                            _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription}' added.");
+                            _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription()}' added.");
                         }
                         else
                         {
