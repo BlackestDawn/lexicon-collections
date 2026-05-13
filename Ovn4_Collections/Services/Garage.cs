@@ -79,6 +79,18 @@ public class Garage
         throw new NotImplementedException();
     }
 
+    public bool CheckIfLicencePresent(string licence)
+    {
+        for (int i = 0; i < _maxSpace; i++)
+        {
+            if (_vehicles[i] != null && _vehicles[i].LicenceNumber.ToLower() == licence.ToLower())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void AddVehicle(Vehicle vehicle)
     {
         if (_usedSpace == _maxSpace)
