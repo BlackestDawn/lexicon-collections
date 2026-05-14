@@ -47,8 +47,15 @@ public class ManagementApp
                         if (_garage.UsedSpace < _garage.MaxSpace)
                         {
                             Vehicle vehicle = _ui.AddVehicleWindow();
-                            _garage.AddVehicle(vehicle);
-                            _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription()}' added.");
+                            if (!_garage.CheckIfLicencePresent(vehicle.LicenceNumber))
+                            {
+                                _garage.AddVehicle(vehicle);
+                                _ui.SuccessMessage($"Vehicle '{vehicle.MinimalDescription()}' added.");
+                            }
+                            else
+                            {
+                                _ui.WarningMessage($"Vehicle with licence {vehicle.LicenceNumber} already parked");
+                            }
                         }
                         else
                         {
